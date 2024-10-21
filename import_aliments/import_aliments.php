@@ -28,12 +28,19 @@ while (($row = fgetcsv($file)) !== FALSE) {
     $codeType->execute();
     $value = $codeType->fetchColumn();
 
+    // Check if the aliment already exists
+    $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM aliment WHERE NOM_ALIMENT = :nom");
+    $checkStmt->bindParam(':nom', $row[7]);
+    $checkStmt->execute();
+    $count = $checkStmt->fetchColumn();
 
-    // Insert the type if it does not exist
-    $stmt = $pdo->prepare("INSERT INTO aliment (NOM_ALIMENT, CODE_TYPE) VALUES (:nom, :codeType)");
-    $stmt->bindParam(':nom', $row[7]);
-    $stmt->bindParam(':codeType', $value);
-    $stmt->execute();
+    if ($count == 0) {
+        $stmt = $pdo->prepare("INSERT INTO aliment (NOM_ALIMENT, CODE_TYPE) VALUES (:nom, :codeType)");
+        $stmt->bindParam(':nom', $row[7]);
+        $stmt->bindParam(':codeType', $value);
+        $stmt->execute();
     }
+    
+}
 
 ?>
