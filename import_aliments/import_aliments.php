@@ -22,13 +22,9 @@ $csvFilePath = "aliases.csv";
 $file = fopen($csvFilePath, "r"); 
 fgetcsv($file); // skip the first line
 while (($row = fgetcsv($file)) !== FALSE) {
-    $login = $row[0] . '_' . $row[1];
-    $email = $login . '@gmail.com';
-    $stmt = $pdo->prepare("INSERT INTO utilisateur (NOM, PRENOM, LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, DATE_NAISSANCE, EMAIL) VALUES (:nom, :prenom, :login, 1, 1, 1, 'root', '1999-01-01', :email)");
-    $stmt->bindParam(':nom', $row[0]);
-    $stmt->bindParam(':prenom', $row[1]);
-    $stmt->bindParam(':login', $login);
-    $stmt->bindParam(':email', $email);
+
+    $stmt = $pdo->prepare("INSERT INTO type_aliment (NOM, PRENOM, LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, DATE_NAISSANCE, EMAIL) VALUES (:nom, :prenom, :login, 1, 1, 1, 'root', '1999-01-01', :email)");
+
     $stmt->execute();
 }
 ?>
