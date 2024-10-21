@@ -18,13 +18,23 @@ catch (PDOException $erreur) {
     echo 'Erreur : '.$erreur->getMessage();
 }
 
-$csvFilePath = "aliases.csv";
+$csvFilePath = "aliments.csv";
 $file = fopen($csvFilePath, "r"); 
 fgetcsv($file); // skip the first line
 while (($row = fgetcsv($file)) !== FALSE) {
+    $type = $row[4];
 
-    $stmt = $pdo->prepare("INSERT INTO type_aliment (NOM, PRENOM, LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, DATE_NAISSANCE, EMAIL) VALUES (:nom, :prenom, :login, 1, 1, 1, 'root', '1999-01-01', :email)");
+    // Check if the type already exists
+    $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM type_aliment WHERE NOM_TYPE = :type");
+    $checkStmt->bindParam(':type', $type);
+    $checkStmt->execute();
+    $count = $checkStmt->fetchColumn();
 
-    $stmt->execute();
+    if ($count == 0) {
+        // Insert the type if it does not exist
+        $stmt = $pdo->prepare("INSERT INTO type_aliment (NOM_TYPE) VALUES (:type)");
+        $stmt->bindParam(':type', $type);
+        $stmt->execute();
+    }
 }
 ?>
