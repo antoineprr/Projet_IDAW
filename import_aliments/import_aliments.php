@@ -20,14 +20,8 @@ catch (PDOException $erreur) {
 
 $csvFilePath = "aliments.csv";
 $file = fopen($csvFilePath, "r"); 
-$row = fgetcsv($file);
-for($i = 14; $i < sizeof($row); $i++){
-    $ratio = $row[$i];
-    $stmt = $pdo->prepare("INSERT INTO ratio (NOM_RATIO) VALUES (:ratio)");
-    $stmt->bindParam(':ratio', $ratio);
-    $stmt->execute();
-
-
-
+fgetcsv($file); // skip the first line
+while (($row = fgetcsv($file)) !== FALSE) {
+    
 }
 ?>
