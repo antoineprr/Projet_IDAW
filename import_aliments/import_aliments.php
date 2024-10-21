@@ -21,7 +21,7 @@ catch (PDOException $erreur) {
 $csvFilePath = "import-template.csv";
 $file = fopen($csvFilePath, "r");
 while (($row = fgetcsv($file)) !== FALSE) {
-    $stmt = $mysqli->prepare("INSERT INTO aliment (NOM_ALIMENT, CODE_TYOE) VALUES (?, ?)");
+    $stmt = $mysqli->prepare("INSERT INTO aliment (NOM_ALIMENT, CODE_TYPE) VALUES (?, ?)");
     $stmt->bind_param("si", $row[1], $row[2]);
     $stmt->execute();
 }
