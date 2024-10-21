@@ -21,4 +21,5 @@
     $pdo->query($script);
     require_once('import_utilisateurs.php');
     require_once('import_type_aliments.php');
+    require_once('import_ratio.php');
 ?>
