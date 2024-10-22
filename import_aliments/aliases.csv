@@ -1,29 +1,29 @@
-Alias,Name,Episode 1,Episode 2,Episode 3,Episode 4,Episode 5,Episode 6,Episode 7
-BEN,OBI-WAN,1,1,1,1,1,1,0
-BEN,KYLO REN,0,0,0,0,0,0,1
-SEE-THREEPIO,C-3PO,1,1,1,1,1,1,1
-THREEPIO,C-3PO,1,1,1,1,1,1,1
-ARTOO-DETOO,R2-D2,1,1,1,1,1,1,1
-ARTOO,R2-D2,1,1,1,1,1,1,1
-PALPATINE,EMPEROR,1,1,1,1,1,1,1
-DARTH SIDIOUS,EMPEROR,1,1,1,1,1,1,1
-BAIL,BAIL ORGANA,1,1,1,1,1,1,1
-MACE,MACE WINDU,1,1,1,1,1,1,0
-WINDU,MACE WINDU,1,1,1,1,1,1,1
-MACE-WINDU,MACE WINDU,1,1,1,1,1,1,1
-NUTE,NUTE GUNRAY,1,1,1,1,1,1,1
-AUNT BERU,BERU,1,1,1,1,1,1,1
-DOOKU,COUNT DOOKU,1,1,1,1,1,1,1
-BOBA,BOBA FETT,1,1,1,1,1,1,1
-JANGO,JANGO FETT,1,1,1,1,1,1,1
-PANAKA,CAPTAIN PANAKA,1,1,1,1,1,1,1
-KI-ADI,KI-ADI-MUNDI,1,1,1,1,1,1,1
-BIBBLE,SIO BIBBLE,1,1,1,1,1,1,1
-ON MEDON,TION MEDON,1,1,1,1,1,1,1
-BIB,BIB FORTUNA,1,1,1,1,1,1,1
-CHEWIE,CHEWBACCA,1,1,1,1,1,1,1
-VADER,DARTH VADER,1,1,1,1,1,1,1
-ACKBAR,ADMIRAL ACKBAR,1,1,1,1,1,1,1
-FN-2187,FINN,1,1,1,1,1,1,1
-UNKAR,UNKAR PLUTT,1,1,1,1,1,1,1
-YOUNG GIRL,REY,0,0,0,0,0,0,1
+Alias,Name,Login,Email,Mot de Passe,Date de Naissance
+BEN,OBI-WAN,obiwan,obi-wan@starwars.com,MDPObiWan,1970-05-25
+BEN,KYLO REN,kylo.ren,kylo-ren@starwars.com,MDPKyloRen,1985-07-20
+SEE-THREEPIO,C-3PO,c3po1,see-threepio@starwars.com,MDPC3PO,1977-05-25
+THREEPIO,C-3PO,c3po2,threepio@starwars.com,MDPC3PO,1977-05-25
+ARTOO-DETOO,R2-D2,r2d2-1,artoo-detoo@starwars.com,MDPR2D2,1977-05-25
+ARTOO,R2-D2,r2d2-2,artoo@starwars.com,MDPR2D2,1977-05-25
+PALPATINE,EMPEROR,emperor,palpatine@starwars.com,MDPEmpereur,1940-04-19
+DARTH SIDIOUS,EMPEROR,darth.sidious,darth-sidious@starwars.com,MDPSidious,1940-04-19
+BAIL,BAIL ORGANA,bailorgana,bail-organa@starwars.com,MDPBailOrgana,1955-02-12
+MACE,MACE WINDU,macewindu1,mace-windu@starwars.com,MDPMaceWindu,1960-03-15
+WINDU,MACE WINDU,macewindu2,windu@starwars.com,MDPMaceWindu,1960-03-15
+MACE-WINDU,MACE WINDU,macewindu3,mace-windu@starwars.com,MDPMaceWindu,1960-03-15
+NUTE,NUTE GUNRAY,gunray,nute-gunray@starwars.com,MDPNuteGunray,1935-06-08
+AUNT BERU,BERU,beru,aunt-beru@starwars.com,MDPBeru,1948-11-11
+DOOKU,COUNT DOOKU,countdooku,dooku@starwars.com,MDPCountDooku,1932-08-02
+BOBA,BOBA FETT,bobafett,boba-fett@starwars.com,MDPBobaFett,1980-12-16
+JANGO,JANGO FETT,jangofett,jango-fett@starwars.com,MDPJangoFett,1955-09-25
+PANAKA,CAPTAIN PANAKA,panaka,panaka@starwars.com,MDPPanaka,1960-04-05
+KI-ADI,KI-ADI-MUNDI,kiadimundi,ki-adi-mundi@starwars.com,MDPKiAdiMundi,1952-10-10
+BIBBLE,SIO BIBBLE,siobibble,sio-bibble@starwars.com,MDPSioBibble,1945-03-28
+ON MEDON,TION MEDON,tionmedon,tion-medon@starwars.com,MDPTionMedon,1957-07-17
+BIB,BIB FORTUNA,bibfortuna,bib-fortuna@starwars.com,MDPBibFortuna,1950-09-01
+CHEWIE,CHEWBACCA,chewbacca,chewie@starwars.com,MDPChewbacca,1956-05-19
+VADER,DARTH VADER,darthvader,vader@starwars.com,MDPDarthVader,1941-01-31
+ACKBAR,ADMIRAL ACKBAR,ackbar,ackbar@starwars.com,MDPAckbar,1947-05-15
+FN-2187,FINN,finn,finn@starwars.com,MDPFinn,1990-11-28
+UNKAR,UNKAR PLUTT,unkarplutt,unkar-plutt@starwars.com,MDPUnkarPlutt,1970-09-30
+YOUNG GIRL,REY,rey,rey@starwars.com,MDPRey,1992-04-10
