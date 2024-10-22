@@ -1,7 +1,7 @@
 <?php
-    require_once('config.php');
+    require_once(dirname(__FILE__) . '/../config.php');
 
-    $script = file_get_contents('projet_idaw.sql');
+    $script = file_get_contents('projet_idaw_sql.sql');
 
     $connectionString = "mysql:host=". _MYSQL_HOST;
     if(defined('_MYSQL_PORT')){
@@ -19,9 +19,4 @@
         echo 'Erreur : '.$erreur->getMessage();
     }
     $pdo->query($script);
-    require_once('import_utilisateurs.php');
-    require_once('import_type_aliments.php');
-    require_once('import_ratio.php');
-    require_once('import_aliments.php');
-    require_once('import_contient_ratio.php');
 ?>
