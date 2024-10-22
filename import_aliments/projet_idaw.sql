@@ -65,7 +65,7 @@ DROP TABLE IF EXISTS `contient`;
 CREATE TABLE IF NOT EXISTS `contient` (
   `NOM_ALIMENT` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `CODE_REPAS` int NOT NULL,
-  `QUANTITE` decimal(15,0) NOT NULL,
+  `QUANTITE` double NOT NULL,
   PRIMARY KEY (`NOM_ALIMENT`,`CODE_REPAS`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
