@@ -30,7 +30,7 @@ while($row = fgetcsv($file)){
 }
 for($i = 14; $i < sizeof($row); $i++){
     $ratio = $row[$i];
-    $stmt = $pdo->prepare("INSERT INTO ratio (NOM_RATIO) VALUES (:ratio)");
+    $stmt = $pdo->prepare("INSERT INTO contient_ratio (NOM_ALIMENT, CODE_RATIO, QUANTITE_RATIO) VALUES (:ratio)");
     $stmt->bindParam(':ratio', $ratio);
     $stmt->execute();
 
