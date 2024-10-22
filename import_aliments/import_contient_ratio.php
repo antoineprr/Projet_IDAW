@@ -24,17 +24,26 @@ $ref = fgetcsv($file);
 
 while($row = fgetcsv($file)){
     $nom = $row[7];
+    for($i = 14; $i < sizeof($row); $i++){
+        $ratio = $ref[$i];
+        $quantite = $row[$i];
+        $ratioCode = $pdo->prepare("SELECT CODE_RATIO FROM ratio WHERE NOM_RATIO = :ratio");
+        $ratioCode->bindParam(':ratio', $ratio);
+        $ratioCode->execute();
+        $ratio = $ratioCode->fetchColumn();
 
-
-
-}
-for($i = 14; $i < sizeof($row); $i++){
-    $ratio = $row[$i];
-    $stmt = $pdo->prepare("INSERT INTO contient_ratio (NOM_ALIMENT, CODE_RATIO, QUANTITE_RATIO) VALUES (:ratio)");
-    $stmt->bindParam(':ratio', $ratio);
-    $stmt->execute();
-
-
-
+        $quantite = str_replace(',', '.', $quantite);
+        $quantite = str_replace('-', '', $quantite);
+        $quantite = str_replace('<', '', $quantite);
+        
+        if($quantite == ''){
+            $quantite = 0;
+        }
+        $stmt = $pdo->prepare("INSERT INTO contient_ratio (NOM_ALIMENT, CODE_RATIO, QUANTITE_RATIO) VALUES (:nom, :ratio, :quantite)");
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':ratio', $ratio);
+        $stmt->bindParam(':quantite', $quantite);
+        $stmt->execute();
+    }
 }
 ?>
