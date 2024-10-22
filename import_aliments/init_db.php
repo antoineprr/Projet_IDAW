@@ -23,4 +23,5 @@
     require_once('import_type_aliments.php');
     require_once('import_ratio.php');
     require_once('import_aliments.php');
+    require_once('import_contient_ratio.php');
 ?>

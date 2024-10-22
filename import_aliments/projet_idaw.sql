@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `contient` (
 
 DROP TABLE IF EXISTS `contient_ratio`;
 CREATE TABLE IF NOT EXISTS `contient_ratio` (
-  `NOM_ALIMENT` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `NOM_ALIMENT` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `CODE_RATIO` int NOT NULL,
   `QUANTITE_RATIO` decimal(15,0) DEFAULT NULL,
   PRIMARY KEY (`NOM_ALIMENT`,`CODE_RATIO`)
