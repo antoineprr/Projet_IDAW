@@ -39,12 +39,6 @@ CREATE TABLE IF NOT EXISTS `aliment` (
 -- Déchargement des données de la table `aliment`
 --
 
-INSERT INTO `aliment` (`NOM_ALIMENT`, `CODE_TYPE`) VALUES
-('carotte', 1),
-('pomme', 2),
-('boeuf', 3),
-('ble', 4),
-('boeuf_carotte', 5);
 
 -- --------------------------------------------------------
 
@@ -129,12 +123,6 @@ CREATE TABLE IF NOT EXISTS `ratio` (
 -- Déchargement des données de la table `ratio`
 --
 
-INSERT INTO `ratio` (`CODE_RATIO`, `NOM_RATIO`) VALUES
-(1, 'glucide'),
-(2, 'proteine'),
-(3, 'energie'),
-(4, 'lipide');
-
 -- --------------------------------------------------------
 
 --
@@ -154,13 +142,6 @@ CREATE TABLE IF NOT EXISTS `repas` (
 -- Déchargement des données de la table `repas`
 --
 
-INSERT INTO `repas` (`CODE_REPAS`, `LOGIN`, `DATE`) VALUES
-(1, 'ArthurL', '2024-10-19 12:30:00'),
-(2, 'JacquesF', '2024-10-16 00:00:00'),
-(3, 'JeanneP', '2024-10-17 00:00:00'),
-(4, 'Lise', '2024-10-13 00:00:00'),
-(5, 'Lise', '2024-10-15 00:00:00'),
-(7, 'JeanneP', '2024-10-16 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -222,13 +203,6 @@ CREATE TABLE IF NOT EXISTS `type_aliment` (
 --
 -- Déchargement des données de la table `type_aliment`
 --
-
-INSERT INTO `type_aliment` (`CODE_TYPE`, `NOM_TYPE`) VALUES
-(1, 'legume'),
-(2, 'fruit'),
-(3, 'viande'),
-(4, 'cereale'),
-(5, 'compose');
 
 -- --------------------------------------------------------
 
