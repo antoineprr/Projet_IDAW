@@ -35,15 +35,26 @@ while($row = fgetcsv($file)){
         $quantite = str_replace(',', '.', $quantite);
         $quantite = str_replace('-', '', $quantite);
         $quantite = str_replace('<', '', $quantite);
+        $quantite = str_replace('traces', '', $quantite);
         
         if($quantite == ''){
             $quantite = 0;
         }
-        $stmt = $pdo->prepare("INSERT INTO contient_ratio (NOM_ALIMENT, CODE_RATIO, QUANTITE_RATIO) VALUES (:nom, :ratio, :quantite)");
-        $stmt->bindParam(':nom', $nom);
-        $stmt->bindParam(':ratio', $ratio);
-        $stmt->bindParam(':quantite', $quantite);
-        $stmt->execute();
+        
+        $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM contient_ratio WHERE NOM_ALIMENT = :nom AND CODE_RATIO = :ratio");
+        $checkStmt->bindParam(':nom', $nom);
+        $checkStmt->bindParam(':ratio', $ratio);
+        $checkStmt->execute();
+        $count = $checkStmt->fetchColumn();
+
+        if ($count == 0) {
+            $stmt = $pdo->prepare("INSERT INTO contient_ratio (NOM_ALIMENT, CODE_RATIO, QUANTITE_RATIO) VALUES (:nom, :ratio, :quantite)");
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':ratio', $ratio);
+            $stmt->bindParam(':quantite', $quantite);
+            $stmt->execute();
+        }
+
     }
 }
 ?>
