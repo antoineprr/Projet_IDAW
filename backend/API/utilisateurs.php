@@ -14,10 +14,28 @@ function explode_url($url) {
 }
 
 
+function user_exist($pdo, $login) {
+    $sql = "SELECT * FROM utilisateur WHERE LOGIN=:login";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':login', $login);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$res){
+        return false;
+    }
+    return true;
+}
+
+
 function get_utilisateurs($pdo) {
     $stmt = $pdo->prepare("SELECT * FROM utilisateur");
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$res){
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "No user found"]));
+    }
+    return $res;
 }
 
 function get_un_utilisateurs($pdo, $login) {
@@ -46,7 +64,43 @@ function add_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $mdp,
     $add->bindParam(':date_naissance', $date_naissance);
     $add->bindParam(':email', $email);
     $add->execute();
+}
 
+function delete_utilisateur($pdo, $login) {
+    if(user_exist($pdo, $login)){
+        $sql = "DELETE FROM utilisateur WHERE LOGIN=:login";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login', $login);
+        $stmt->execute();
+        http_response_code(200);
+        exit(json_encode(['status' => 'success', 'message' => "Utilisateur '$login' deleted"]));
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
+function update_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $mdp, $nom, $prenom, $date_naissance, $email) {
+    if(user_exist($pdo, $login)){
+        $sql = "UPDATE utilisateur SET CODE_AGE=:code_age, CODE_SEXE=:code_sexe, CODE_SPORT=:code_sport, MDP=:mdp, NOM=:nom, PRENOM=:prenom, DATE_NAISSANCE=:date_naissance, EMAIL=:email WHERE LOGIN=:login";
+        $update = $pdo->prepare($sql);
+        $update->bindParam(':login', $login);
+        $update->bindParam(':code_age', $code_age);
+        $update->bindParam(':code_sexe', $code_sexe);
+        $update->bindParam(':code_sport', $code_sport);
+        $update->bindParam(':mdp', $mdp);
+        $update->bindParam(':nom', $nom);
+        $update->bindParam(':prenom', $prenom);
+        $update->bindParam(':date_naissance', $date_naissance);
+        $update->bindParam(':email', $email);
+        $update->execute();
+        setHeaders();
+        http_response_code(200);
+        exit(json_encode(['status' => 'success', 'message' => "Utilisateur '$login' updated"]));
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
 }
 
 
@@ -85,6 +139,30 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         else{
             http_response_code(400);
             exit(json_encode(['status' => 'error', 'message' => 'Missing parameters']));
+        }
+    case 'DELETE':
+        $url = explode_url($_SERVER['REQUEST_URI']);
+        if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
+            $login = $url[5];
+            delete_utilisateur($pdo, $login);
+        } else {
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Missing login']));
+        }
+    case 'PUT':
+        $url = explode_url($_SERVER['REQUEST_URI']);
+        if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
+            $login = $url[5];
+            $data = json_decode(file_get_contents('php://input'), true);
+            if(isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['mdp']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
+                update_utilisateur($pdo, $login, $data['code_age'], $data['code_sexe'], $data['code_sport'], $data['mdp'], $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
+            } else {
+                http_response_code(400);
+                exit(json_encode(['status' => 'error', 'message' => 'Missing parameters']));
+            }
+        } else {
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Missing login']));
         }
 
     default:
