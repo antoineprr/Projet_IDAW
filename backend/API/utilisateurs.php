@@ -1,9 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../init_pdo.php');
 require_once(dirname(__FILE__) . '/../config.php');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 ///////////////////////////////////////////
 // fonctions utilisées dans les requetes //
@@ -35,6 +33,22 @@ function get_un_utilisateurs($pdo, $login) {
     return $res;
 }
 
+function add_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $mdp, $nom, $prenom, $date_naissance, $email){
+    $sql = "INSERT INTO utilisateur (LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, NOM, PRENOM, DATE_NAISSANCE, EMAIL) VALUES (:login, :code_age, :code_sexe, :code_sport, :mdp, :nom, :prenom, :date_naissance, :email)";
+    $add = $pdo->prepare($sql);
+    $add->bindParam(':login', $login);
+    $add->bindParam(':code_age', $code_age);
+    $add->bindParam(':code_sexe', $code_sexe);
+    $add->bindParam(':code_sport', $code_sport);
+    $add->bindParam(':mdp', $mdp);
+    $add->bindParam(':nom', $nom);
+    $add->bindParam(':prenom', $prenom);
+    $add->bindParam(':date_naissance', $date_naissance);
+    $add->bindParam(':email', $email);
+    $add->execute();
+
+}
+
 
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
@@ -60,10 +74,20 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         setHeaders();
         http_response_code(200);
         exit(json_encode($result));
-        break;
+    case 'POST':
+        $data = json_decode(file_get_contents('php://input'), true);
+        if(isset($data['login']) && isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['mdp']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
+            add_utilisateur($pdo, $data['login'], $data['code_age'], $data['code_sexe'], $data['code_sport'], $data['mdp'], $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
+            setHeaders();
+            http_response_code(201);
+            exit(json_encode(['status' => 'success', 'message' => 'Utilisateur ajouté']));
+        }
+        else{
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Missing parameters']));
+        }
 
     default:
         http_response_code(405);
         exit(json_encode(array("message" => "Method not allowed")));
-        break;
 }
