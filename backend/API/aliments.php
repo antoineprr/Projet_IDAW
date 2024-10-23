@@ -26,7 +26,18 @@ function get_aliment_by_name($pdo, $aliment_url) {
     return $res;
 }
 
-
+function get_aliment_by_code_type($pdo, $code_type) {
+    $sql = "SELECT * FROM aliment WHERE CODE_TYPE=:code_type";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_type', $code_type);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$res){
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Code '$code_type' not found"]));
+    }
+    return $res;
+}
 
 
 function setHeaders() {
@@ -49,13 +60,14 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         $aliment_url = htmlspecialchars($aliment_url, ENT_QUOTES, 'UTF-8');
         if ($aliment_url=='aliments' || $aliment_url==''){
             $result = get_aliments($pdo);
-            setHeaders();
-            http_response_code(200);
-            exit(json_encode($result));
-            break;
         }
-        $aliment_url = str_replace("-", " ", $aliment_url);
-        $result = get_aliment_by_name($pdo, $aliment_url);
+        elseif (!is_numeric($aliment_url)){
+            $aliment_url = str_replace("-", " ", $aliment_url);
+            $result = get_aliment_by_name($pdo, $aliment_url);
+        }
+        else{
+            $result = get_aliment_by_code_type($pdo, $aliment_url);
+        }
         setHeaders();
         http_response_code(200);
         exit(json_encode($result));
