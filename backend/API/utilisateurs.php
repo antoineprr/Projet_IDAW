@@ -7,13 +7,47 @@ require_once(dirname(__FILE__) . '/../config.php');
 // fonctions utilisées dans les requetes //
 ///////////////////////////////////////////
 
+
+function explode_url($url) {
+    $url_segments = explode('/', $url);
+    return $url_segments;
+}
+
+
 function get_utilisateurs($pdo) {
     $stmt = $pdo->prepare("SELECT * FROM utilisateur");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function get_un_utilisateurs($pdo, $login) {
+    $sql = "SELECT * FROM utilisateur WHERE LOGIN=:login";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':login', $login);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$res){
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+    return $res;
+}
 
+function add_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $mdp, $nom, $prenom, $date_naissance, $email){
+    $sql = "INSERT INTO utilisateur (LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, NOM, PRENOM, DATE_NAISSANCE, EMAIL) VALUES (:login, :code_age, :code_sexe, :code_sport, :mdp, :nom, :prenom, :date_naissance, :email)";
+    $add = $pdo->prepare($sql);
+    $add->bindParam(':login', $login);
+    $add->bindParam(':code_age', $code_age);
+    $add->bindParam(':code_sexe', $code_sexe);
+    $add->bindParam(':code_sport', $code_sport);
+    $add->bindParam(':mdp', $mdp);
+    $add->bindParam(':nom', $nom);
+    $add->bindParam(':prenom', $prenom);
+    $add->bindParam(':date_naissance', $date_naissance);
+    $add->bindParam(':email', $email);
+    $add->execute();
+
+}
 
 
 function setHeaders() {
@@ -29,14 +63,31 @@ function setHeaders() {
 
 switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de l'url et si c'est la bonne méthode pour récupérer les GET, POST...
     case 'GET':
-        $result = get_utilisateurs($pdo);
+        $url = explode_url($_SERVER['REQUEST_URI']);
+        if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
+            $login = $url[5];
+            $result = get_un_utilisateurs($pdo, $login);
+        } else {
+            $result = get_utilisateurs($pdo);  // Récupérer tous les utilisateurs si aucun login spécifique
+        }
+        
         setHeaders();
         http_response_code(200);
         exit(json_encode($result));
-        break;
+    case 'POST':
+        $data = json_decode(file_get_contents('php://input'), true);
+        if(isset($data['login']) && isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['mdp']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
+            add_utilisateur($pdo, $data['login'], $data['code_age'], $data['code_sexe'], $data['code_sport'], $data['mdp'], $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
+            setHeaders();
+            http_response_code(201);
+            exit(json_encode(['status' => 'success', 'message' => 'Utilisateur ajouté']));
+        }
+        else{
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Missing parameters']));
+        }
 
     default:
         http_response_code(405);
         exit(json_encode(array("message" => "Method not allowed")));
-        break;
 }
