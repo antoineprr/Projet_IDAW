@@ -62,6 +62,7 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $result = get_aliments($pdo);
         }
         elseif (!is_numeric($aliment_url)){
+            $aliment_url = urldecode($aliment_url);
             $aliment_url = str_replace("-", " ", $aliment_url);
             $result = get_aliment_by_name($pdo, $aliment_url);
         }
