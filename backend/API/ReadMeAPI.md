@@ -95,3 +95,74 @@ Réponse:
     "message": "Utilisateur 'test_post' updated"
 }
 ```
+
+## Endpoint : type_aliments
+
+### GET .../backend/API/type-aliments.php
+
+Retourne tous les types d'aliments disponibles dans la base de données.
+
+#### Réponse : 
+```
+[
+    {
+        "ID": 1,
+        "NOM": "Fruit",
+    },
+    {
+        "ID": 2,
+        "NOM": "Légume",
+    },
+    ...
+]
+```
+
+### POST .../backend/API/type-aliments.php
+
+Ajoute un nouveau type d’aliment dans la base de données.
+
+#### Body :
+```
+{
+    "nom_type_aliment": "Céréales"
+}
+```
+
+#### Réponse :
+```
+{
+    "status": "success",
+    "message": "Type aliment '3' created"
+}
+```
+
+### PUT .../backend/API/type-aliments.php/id/:id/
+
+Met à jour les informations d’un type d’aliment spécifique dans la base de données.
+
+#### Body :
+```
+{
+    "nom_type_aliment": "Légumineuses"
+}
+```
+
+#### Réponse :
+```
+{
+    "status": "success",
+    "message": "Type aliment '3' updated"
+}
+```
+
+### DELETE .../backend/API/type-aliments.php/id/:id/
+
+Supprime un type d’aliment spécifique de la base de données.
+
+#### Réponse :
+```
+{
+    "status": "success",
+    "message": "Type aliment '3' deleted"
+}
+```
