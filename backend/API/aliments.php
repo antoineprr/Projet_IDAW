@@ -151,5 +151,8 @@ switch($_SERVER["REQUEST_METHOD"]) {
             http_response_code(400);
             exit(json_encode(['status' => 'error', 'message' => 'Invalid input parameters']));
         }
-
+    
+    default:
+        http_response_code(405);
+        exit(json_encode(array("message" => "Method not allowed")));
 }
