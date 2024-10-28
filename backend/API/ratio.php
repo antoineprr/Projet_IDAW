@@ -2,7 +2,6 @@
 require_once(dirname(__FILE__) . '/../init_pdo.php');
 require_once(dirname(__FILE__) . '/../config.php');
 
-
 ///////////////////////////////////////////
 // fonctions utilisées dans les requetes //
 ///////////////////////////////////////////
@@ -27,12 +26,6 @@ function get_ratios_of_aliment($pdo, $ratio_url) {
 }
 
 function get_one_ratio_of_aliment($pdo, $code_ratio, $aliment) {
-    // Vérification des paramètres d'entrée
-    if (empty($code_ratio) || empty($aliment)) {
-        http_response_code(400);
-        exit(json_encode(['status' => 'error', 'message' => 'Invalid input parameters']));
-    }
-
     $sql = "SELECT contient_ratio.QUANTITE_RATIO, ratio.NOM_RATIO 
             FROM contient_ratio 
             JOIN ratio ON ratio.CODE_RATIO = contient_ratio.CODE_RATIO 
@@ -48,7 +41,7 @@ function get_one_ratio_of_aliment($pdo, $code_ratio, $aliment) {
 
         if (!$res) {
             http_response_code(404);
-            exit(json_encode(['status' => 'error', 'message' => "No data found for code '$code_ratio' and aliment '$aliment'"]));
+            exit(json_encode(['status' => 'error', 'message' => "Code '$code_ratio' not found"]));
         }
 
         return $res;
@@ -56,6 +49,31 @@ function get_one_ratio_of_aliment($pdo, $code_ratio, $aliment) {
         http_response_code(500);
         exit(json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]));
     }
+}
+
+function create_ratio($pdo, $name) {
+    $sql = "INSERT INTO ratio (NOM_RATIO) VALUES (:name)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
+
+function update_ratio($pdo, $id, $name) {
+    $sql = "UPDATE ratio SET NOM_RATIO=:name WHERE CODE_RATIO=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
+
+function delete_ratio($pdo, $id) {
+    $sql = "DELETE FROM ratio WHERE CODE_RATIO=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->rowCount();
 }
 
 function setHeaders() {
@@ -68,8 +86,7 @@ function setHeaders() {
 // recuperation des requêtes //
 ///////////////////////////////
 
-
-switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de l'url et si c'est la bonne méthode pour récupérer les GET, POST...
+switch($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         $url = $_SERVER['REQUEST_URI'];
         $url_segments = explode('/', $url);
@@ -102,8 +119,47 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         http_response_code(200);
         exit(json_encode($result));
 
+    case 'POST':
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['name'])) {
+            $result = create_ratio($pdo, $data['name']);
+            setHeaders();
+            http_response_code(201);
+            exit(json_encode(['status' => 'success', 'message' => 'Ratio created successfully']));
+        } else {
+            setHeaders();
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Invalid input parameters']));
+        }
+
+    case 'PUT':
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['id']) && isset($data['name'])) {
+            $result = update_ratio($pdo, $data['id'], $data['name']);
+            setHeaders();
+            http_response_code(200);
+            exit(json_encode(['status' => 'success', 'message' => 'Ratio updated successfully']));
+        } else {
+            setHeaders();
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Invalid input parameters']));
+        }
+
+    case 'DELETE':
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['id'])) {
+            $result = delete_ratio($pdo, $data['id']);
+            setHeaders();
+            http_response_code(200);
+            exit(json_encode(['status' => 'success', 'message' => 'Ratio deleted successfully']));
+        } else {
+            setHeaders();
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => 'Invalid input parameters']));
+        }
+
     default:
+        setHeaders();
         http_response_code(405);
-        exit(json_encode(array("message" => "Method not allowed")));
-        break;
+        exit(json_encode(['status' => 'error', 'message' => 'Method not allowed']));
 }
