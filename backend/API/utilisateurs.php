@@ -103,6 +103,35 @@ function update_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $m
     }
 }
 
+function get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date) {
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT r.CODE_REPAS, r.DATE, a.NOM_ALIMENT, cr.QUANTITE_RATIO, rat.NOM_RATIO
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
+                JOIN contient_ratio cr ON a.NOM_ALIMENT = cr.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
+                WHERE r.LOGIN = :login_utilisateur
+                    AND DATE(r.DATE) = :date_donnee;
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No aliment repas ratios found for user '$login' on date '$date'"]));
+        }
+        return $res;
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
+
+
 
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
@@ -121,9 +150,18 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
             $login = $url[5];
             $result = get_un_utilisateurs($pdo, $login);
-        } else {
+        } 
+        
+        if (isset($url[4]) && $url[4] == 'all' && isset($url[5]) && isset($url[6])) {
+            $login = $url[5];
+            $date = $url[6];
+            $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
+        }
+        
+        else {
             $result = get_utilisateurs($pdo);  // Récupérer tous les utilisateurs si aucun login spécifique
         }
+
         
         setHeaders();
         http_response_code(200);
