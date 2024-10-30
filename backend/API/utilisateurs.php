@@ -130,7 +130,32 @@ function get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date) {
     }
 }
 
-
+function add_repas_to_utilisateur($pdo, $login, $date, $aliment, $quantite){
+    if(user_exist($pdo, $login)){
+        $sql = "INSERT INTO repas ( LOGIN, DATE) VALUES (:login, :date)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login', $login);
+        $stmt->bindParam(':date', $date);
+        $stmt->execute();
+        if(!$stmt){
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => "Error while adding repas"]));
+        }
+        $code_repas = $pdo->lastInsertId();
+        $sql = "INSERT INTO contient ( CODE_REPAS, NOM_ALIMENT, QUANTITE) VALUES (:code_repas, :nom_aliment, :quantite)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':code_repas', $code_repas);
+        $stmt->bindParam(':nom_aliment', $aliment);
+        $stmt->bindParam(':quantite', $quantite);
+        $stmt->execute();
+        if(!$stmt){
+            http_response_code(400);
+            exit(json_encode(['status' => 'error', 'message' => "Error while adding aliment to repas"]));
+        }
+        http_response_code(201);
+        exit(json_encode(['status' => 'success', 'message' => "Repas added to user '$login'"]));
+    }
+}
 
 
 function setHeaders() {
@@ -173,6 +198,9 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             setHeaders();
             http_response_code(201);
             exit(json_encode(['status' => 'success', 'message' => 'Utilisateur ajouté']));
+        }
+        if(isset($data['login']) && isset($data['date']) && isset($data['aliment']) && isset($data['quantite'])){
+            add_repas_to_utilisateur($pdo, $data['login'], $data['date'], $data['aliment'], $data['quantite']);
         }
         else{
             http_response_code(400);
