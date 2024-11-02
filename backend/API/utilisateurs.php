@@ -39,7 +39,7 @@ function get_utilisateurs($pdo) {
 }
 
 function get_un_utilisateurs($pdo, $login) {
-    $sql = "SELECT * FROM utilisateur WHERE LOGIN=:login";
+    $sql = "SELECT * FROM utilisateur WHERE LOGIN=:login;";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':login', $login);
     $stmt->execute();
@@ -177,7 +177,7 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $result = get_un_utilisateurs($pdo, $login);
         } 
         
-        if (isset($url[4]) && $url[4] == 'all' && isset($url[5]) && isset($url[6])) {
+        else if (isset($url[4]) && $url[4] == 'all' && isset($url[5]) && isset($url[6])) {
             $login = $url[5];
             $date = $url[6];
             $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
