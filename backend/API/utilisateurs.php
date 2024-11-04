@@ -182,11 +182,69 @@ function get_calories_login_date($pdo, $login, $date) {
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
                 WHERE r.LOGIN = :login_utilisateur
-                AND cr.CODE_RATIO = 67
-                AND DATE(r.DATE) BETWEEN :date_donnee - INTERVAL 6 DAY AND :date_donnee
-                GROUP BY DAY
+                AND rat.NOM_RATIO = 'Energie, N x facteur Jones, avec fibres  (kcal/100 g)'
+                GROUP BY DAY 
                 ORDER BY DAY DESC;
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        //$stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login' on date '$date'"]));
+        }
+        return $res;
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
+function get_ratios_percent_from_day_login($pdo, $login, $date) {
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT SUM(cr.QUANTITE_RATIO) AS SUM_RATIO
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
+                WHERE r.LOGIN = :login_utilisateur
+                AND (rat.NOM_RATIO = 'Protéines, N x 6.25 (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Lipides (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Glucides (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Sucres (g/100 g)'
+                    OR rat.NOM_RATIO = 'Fibres alimentaires (g/100 g)')
+                AND DATE(r.DATE) = :date_donnee
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login' on date '$date'"]));
+        }
+        $sum_ratio = $res['SUM_RATIO'];
+
+
+        $sql = "SELECT rat.NOM_RATIO, (SUM(cr.QUANTITE_RATIO) / $sum_ratio)*100 AS QUANTITE
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
+                WHERE r.LOGIN = :login_utilisateur
+                AND DATE(r.DATE) = :date_donnee
+                AND (rat.NOM_RATIO = 'Protéines, N x 6.25 (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Lipides (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Glucides (g/100 g)' 
+                    OR rat.NOM_RATIO = 'Sucres (g/100 g)'
+                    OR rat.NOM_RATIO = 'Fibres alimentaires (g/100 g)')
+                GROUP BY rat.NOM_RATIO
+                ORDER BY QUANTITE DESC;
                 ";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':login_utilisateur', $login);
@@ -195,7 +253,7 @@ function get_calories_login_date($pdo, $login, $date) {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(!$res){
             http_response_code(404);
-            exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login' on date '$date'"]));
+            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login' on date '$date'"]));
         }
         return $res;
     } else {
@@ -234,6 +292,12 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $login = $url[5];
             $date = $url[6];
             $result = get_calories_login_date($pdo, $login, $date);
+        }
+
+        else if (isset($url[4]) && $url[4] == 'daily_ratios' && isset($url[5]) && isset($url[6])) {
+            $login = $url[5];
+            $date = $url[6];
+            $result = get_ratios_percent_from_day_login($pdo, $login, $date);
         }
         
         else {

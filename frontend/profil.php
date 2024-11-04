@@ -5,7 +5,7 @@ require_once('header_template.php');
     const login = '<?php echo $_SESSION['login']; ?>';
 </script>
 <script src="js/script_profil.js"></script>
-    <div class="container">
+    <div class="container flex-grow-1">
         <h2>Vos informations :</h2>
         <form id="inscriptionForm" action="" onsubmit="onFormSubmit(event)">
             <div class="form-group">
@@ -50,3 +50,7 @@ require_once('header_template.php');
         </form>
         <button onClick="unlockForm(this)">Modifier les informations</button>
     </div>
+
+<?php
+require_once('footer_template.php');
+?>
