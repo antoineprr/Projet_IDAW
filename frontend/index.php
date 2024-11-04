@@ -1,6 +1,13 @@
 <?php
 require_once('header_template.php');
 ?>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="js/tab_calories.js"></script>
+<script src="js/pie_ratio.js"></script>
+
 
 <div class="container mt-5">
     <div class="row">
@@ -9,39 +16,39 @@ require_once('header_template.php');
             <p class="lead">Découvrez nos produits et services exceptionnels.</p>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card">
-                <img src="path/to/image1.jpg" class="card-img-top" alt="Image 1">
+
+
+    <div class="container mt-5">
+    <div class="row">
+        <!-- Card 1 -->
+        <div class="col-md-6">
+            <div class="card border-primary mb-3" style="width: 100%; min-height: 300px;">
+                <div class="card-header">Calories consommées par jour</div>
                 <div class="card-body">
-                    <h5 class="card-title">Produit 1</h5>
-                    <p class="card-text">Description du produit 1.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                    <h4 class="card-title"></h4>
+                    <div id="caloriesChart" style="width: 100%; height: 100%; min-height: 300px;"></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="path/to/image2.jpg" class="card-img-top" alt="Image 2">
+        
+        <!-- Card 2 -->
+        <div class="col-md-6">
+            <div class="card border-primary mb-3" style="width: 100%; min-height: 300px;">
+                <div class="card-header">Ratio consommées aujourd'hui</div>
                 <div class="card-body">
-                    <h5 class="card-title">Produit 2</h5>
-                    <p class="card-text">Description du produit 2.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="path/to/image3.jpg" class="card-img-top" alt="Image 3">
-                <div class="card-body">
-                    <h5 class="card-title">Produit 3</h5>
-                    <p class="card-text">Description du produit 3.</p>
-                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                    <h4 class="card-title"></h4>
+                    <div id="ratioPie" style="width: 100%; height: 100%; min-height: 300px;"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 <?php
 require_once('footer_template.php');
