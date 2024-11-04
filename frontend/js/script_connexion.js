@@ -1,5 +1,4 @@
-//const prefix_api = 'http://localhost/PROJET_IDAW/backend/API/'; // a mettre dans config.php
-const prefix_api = 'http://localhost-projet/backend/API'; // a mettre dans config.php
+const prefix_api = 'http://localhost/PROJET_IDAW/backend/API/'; // a mettre dans config.php
 function onFormSubmit(event) {
     // prevent the form to be sent to the server
     event.preventDefault();
