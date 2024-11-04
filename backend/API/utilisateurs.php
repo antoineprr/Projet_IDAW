@@ -157,6 +157,25 @@ function add_repas_to_utilisateur($pdo, $login, $date, $aliment, $quantite){
     }
 }
 
+function check_pswd($pdo, $login, $mdp){
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT MDP FROM utilisateur WHERE LOGIN=:login";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login', $login);
+        $stmt->execute();
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($res['MDP'] != $mdp){
+            http_response_code(401);
+            exit(json_encode(['status' => 'error', 'message' => "Wrong password for user '$login'"]));
+        }
+        http_response_code(200);
+        exit(json_encode(['status' => 'success']));
+    }
+    else{
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
 
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
@@ -201,6 +220,9 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         }
         if(isset($data['login']) && isset($data['date']) && isset($data['aliment']) && isset($data['quantite'])){
             add_repas_to_utilisateur($pdo, $data['login'], $data['date'], $data['aliment'], $data['quantite']);
+        }
+        if(isset($data['login']) && isset($data['password'])){
+            check_pswd($pdo, $data['login'], $data['password']);
         }
         else{
             http_response_code(400);
