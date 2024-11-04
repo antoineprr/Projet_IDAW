@@ -28,10 +28,10 @@
         <li class="nav-item">
           <a class="nav-link" href="aliments.php">Aliments</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="connexion.php">Deconnexion</a>
-        </li>
       </ul>
+      <div class="d-flex">
+        <a class="nav-link btn-secondary" href="../backend/deconnexion.php">Deconnexion</a>
+    </div>
     </div>
   </div>
 </nav>
