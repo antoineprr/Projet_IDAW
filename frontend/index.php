@@ -43,13 +43,6 @@ require_once('header_template.php');
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
 <?php
 require_once('footer_template.php');
 ?>
