@@ -26,8 +26,8 @@ for($i = 14; $i < sizeof($row); $i++){
     $stmt = $pdo->prepare("INSERT INTO ratio (NOM_RATIO) VALUES (:ratio)");
     $stmt->bindParam(':ratio', $ratio);
     $stmt->execute();
-
-
-
 }
-?>
+$ratio = $row[12];
+$stmt = $pdo->prepare("INSERT INTO ratio (NOM_RATIO) VALUES (:ratio)");
+$stmt->bindParam(':ratio', $ratio);
+$stmt->execute();
