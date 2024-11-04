@@ -90,7 +90,7 @@ switch($_SERVER["REQUEST_METHOD"]) {
             $aliment = urldecode($url[5]);
             $aliment = str_replace('-', ' ', $aliment);
             $result = get_type_of_aliment($pdo, $aliment);
-        } else if (!isset($url[4])) {
+        } else {
             $result = get_types_aliments($pdo);
         }
         setHeaders();
