@@ -29,14 +29,6 @@ require_once('header_template.php');
                 <input type="date" id="date_naissance" name="date_naissance" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirmer le mot de passe :</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
-            </div>
-            <div class="form-group">
                 <label for="tranche_age">Tranche d'âge :</label>
                 <select id="tranche_age" name="tranche_age" class="form-control" required>
                     <option value="">Sélectionnez votre tranche d'âge</option>
@@ -54,6 +46,7 @@ require_once('header_template.php');
                     <option value="">Sélectionnez votre sexe</option>
                 </select>
             </div>
-            <button type="submit">Créer un compte</button>
+            <button type="submit" id="save" style="display: none;">Enregistrer les informations</button>
         </form>
+        <button onClick="unlockForm(this)">Modifier les informations</button>
     </div>
