@@ -45,7 +45,14 @@
                 success: function(response) {
                     console.log(response);
                     if(response.status === "success") {
-                        window.location.href = "connected.php";
+                        $.ajax({
+                            type: 'POST',
+                            url: 'connected.php',
+                            data: { login: login },
+                            success: function() {
+                                window.location.href = "index.php";
+                            }
+                        });
                     } else {
                         alert(response.message || "Erreur de login/password");
                     }
