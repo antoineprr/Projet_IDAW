@@ -182,15 +182,15 @@ function get_calories_login_date($pdo, $login, $date) {
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
                 WHERE r.LOGIN = :login_utilisateur
-                AND cr.CODE_RATIO = 67
-                AND DATE(r.DATE) BETWEEN :date_donnee - INTERVAL 6 DAY AND :date_donnee
-                GROUP BY DAY
+                AND rat.NOM_RATIO = 'Energie, N x facteur Jones, avec fibres  (kcal/100 g)'
+                GROUP BY DAY 
                 ORDER BY DAY DESC;
                 ";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':login_utilisateur', $login);
-        $stmt->bindParam(':date_donnee', $date);
+        //$stmt->bindParam(':date_donnee', $date);
         $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(!$res){
