@@ -101,10 +101,10 @@ CREATE TABLE IF NOT EXISTS `pratique_sport` (
 --
 
 INSERT INTO `pratique_sport` (`CODE_SPORT`, `NOM_SPORT`) VALUES
-(1, 'extreme'),
-(2, 'regulier'),
-(3, 'faible'),
-(4, 'nulle');
+(1, 'Très importante'),
+(2, 'Régulière'),
+(3, 'Occasionnelle'),
+(4, 'Nulle');
 
 -- --------------------------------------------------------
 
@@ -161,8 +161,9 @@ CREATE TABLE IF NOT EXISTS `sexe` (
 --
 
 INSERT INTO `sexe` (`CODE_SEXE`, `NOM_SEXE`) VALUES
-(1, 'masculin'),
-(2, 'feminin');
+(1, 'Homme'),
+(2, 'Femme'),
+(3, 'Autre / Préfère ne pas répondre');
 
 -- --------------------------------------------------------
 
@@ -182,10 +183,10 @@ CREATE TABLE IF NOT EXISTS `tranche_age` (
 --
 
 INSERT INTO `tranche_age` (`CODE_AGE`, `TRANCHE`) VALUES
-(1, 'enfant'),
-(2, 'jeune_adulte'),
-(3, 'adulte'),
-(4, 'retraite');
+(1, 'Moins de 18 ans'),
+(2, 'Enre 18 et 40 ans'),
+(3, 'Entre 40 et 60 ans'),
+(4, 'Plus de 60 ans');
 
 -- --------------------------------------------------------
 

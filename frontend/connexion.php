@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <?php require_once('header_template_creation.php') ?>
     <div class="container">
         <h2>Connexion</h2>
         <form id="connexionForm" action="" onsubmit="onFormSubmit(event)">
@@ -23,9 +24,12 @@
             <button type="submit">Se connecter</button>
         </form>
     </div>
+    <div class="container" style="margin-top: 20px;">
+        <p>Vous n'avez pas de compte ? <a href="inscription.php">Créer un compte</a></p>
+    </div>
 
     <script>
-        const prefix_api = 'http://localhost/PROJET_IDAW/backend/API/'; // a mettre dans config
+        const prefix_api = 'http://localhost/PROJET_IDAW/backend/API/'; // a mettre dans config.php
         function onFormSubmit(event) {
             // prevent the form to be sent to the server
             event.preventDefault();
@@ -35,7 +39,7 @@
             form.reset();
             $.ajax({
                 type: 'POST',
-                url: `${prefix_api}/utilisateurs.php`,
+                url: prefix_api + '/utilisateurs.php',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
@@ -47,7 +51,7 @@
                     if(response.status === "success") {
                         $.ajax({
                             type: 'POST',
-                            url: 'connected.php',
+                            url: '../backend/connected.php',
                             data: { login: login },
                             success: function() {
                                 window.location.href = "index.php";
