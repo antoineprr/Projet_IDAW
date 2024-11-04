@@ -167,8 +167,7 @@ function check_pswd($pdo, $login, $mdp){
             http_response_code(401);
             exit(json_encode(['status' => 'error', 'message' => "Wrong password for user '$login'"]));
         }
-        http_response_code(200);
-        exit(json_encode(['status' => 'success']));
+        return true;
     }
     else{
         http_response_code(404);
@@ -202,6 +201,15 @@ function get_calories_login_date($pdo, $login, $date) {
         http_response_code(404);
         exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
     }
+}
+
+function update_mdp($pdo, $login, $new_password) {
+    $sql = "UPDATE utilisateur SET MDP=:new_password WHERE LOGIN=:login";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':new_password', $new_password);
+    $stmt->bindParam(':login', $login);
+    $stmt->execute();
+    setHeaders();
 }
 
 function get_ratios_percent_from_day_login($pdo, $login, $date) {
@@ -262,6 +270,7 @@ function get_ratios_percent_from_day_login($pdo, $login, $date) {
     }
 }
 
+
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
     header("Access-Control-Allow-Origin: *");
@@ -303,11 +312,10 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         else {
             $result = get_utilisateurs($pdo);  // Récupérer tous les utilisateurs si aucun login spécifique
         }
-
-
         setHeaders();
         http_response_code(200);
         exit(json_encode($result));
+
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true);
         if(isset($data['login']) && isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['mdp']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
@@ -320,7 +328,10 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             add_repas_to_utilisateur($pdo, $data['login'], $data['date'], $data['aliment'], $data['quantite']);
         }
         if(isset($data['login']) && isset($data['password'])){
-            check_pswd($pdo, $data['login'], $data['password']);
+            if(check_pswd($pdo, $data['login'], $data['password'])){
+                http_response_code(200);
+                exit(json_encode(['status' => 'success']));
+            }
         }
         else{
             http_response_code(400);
@@ -337,19 +348,29 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         }
     case 'PUT':
         $url = explode_url($_SERVER['REQUEST_URI']);
+        $data = json_decode(file_get_contents('php://input'), true);
         $size = count($url);
         if (isset($url[$size-2]) && $url[$size-2] == 'login' && isset($url[$size-1])) {
             $login = $url[$size-1];
-            $data = json_decode(file_get_contents('php://input'), true);
             if(isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
                 update_utilisateur($pdo, $login, $data['code_age'], $data['code_sexe'], $data['code_sport'], $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
             } else {
                 http_response_code(400);
                 exit(json_encode(['status' => 'error', 'message' => 'Missing parameters']));
             }
+        } else if (isset($data['login']) && isset($data['current_password']) && isset($data['new_password'])) {
+            $login = $data['login'];
+            if(check_pswd($pdo, $login, $data['current_password'])){
+                update_mdp($pdo, $login, $data['new_password']);
+                http_response_code(200);
+                exit(json_encode(['status' => 'success', 'message' => "Password updated for user '$login'"]));
+            } else {
+                http_response_code(401);
+                exit(json_encode(['status' => 'error', 'message' => "Current password is incorrect"]));
+            }
         } else {
             http_response_code(400);
-            exit(json_encode(['status' => 'error', 'message' => 'Missing login']));
+            exit(json_encode(['status' => 'error', 'message' => 'Missing elements']));
         }
 
     default:

@@ -4,9 +4,12 @@ $(document).ready(function() {
     chargerPratiqueSport();
     chargerSexe();
     chargerDonnees();
-    $('input, select').prop('disabled', true);
-
+    lockChamps();
 });
+
+function lockChamps(){
+    $('#editForm input, #editForm select').prop('disabled', true);
+}
 
 function chargerTranchesAge() {
     $.ajax({
@@ -93,7 +96,7 @@ function unlockForm(button){
     $('input, select').prop('disabled', false);
     $('#login').prop('disabled', true);
     $(button).hide();
-    $('#save').show();
+    $('#btSave').show();
 }
 
 function onFormSubmit(event) {
@@ -125,7 +128,10 @@ function onFormSubmit(event) {
     success: function(response) {
         console.log(response);
         if (response.status === "success") {
-            console.log('success') ;
+            alert("Votre compte a été mis à jour avec succès.");
+            $('#btSave').hide();
+            $('#btEdit').show();
+            lockChamps();
         } else {
             alert(response.message || "Erreur lors de la mise à jour du compte.");
         }
@@ -134,5 +140,42 @@ function onFormSubmit(event) {
         console.error(xhr.responseText);
         alert("Une erreur s'est produite lors de la mise à jour du compte.");
     }
+    });
+}
+
+function onPasswordFormSubmit(event) {
+    event.preventDefault();
+    let currentPassword = $("#current_password").val();
+    let newPassword = $("#new_password").val();
+    let confirmPassword = $("#confirm_password").val();
+
+    if (newPassword !== confirmPassword) {
+        alert("Les nouveaux mots de passe ne correspondent pas.");
+        return;
+    }
+
+    $.ajax({
+        type: 'PUT',
+        url: `${prefix_api}/utilisateurs.php`,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            login: login,
+            current_password: currentPassword,
+            new_password: newPassword
+        }),
+        success: function(response) {
+            console.log(response);
+            if (response.status === "success") {
+                alert("Votre mot de passe a été mis à jour avec succès.");
+                $("#passwordForm")[0].reset();
+            } else {
+                alert(response.message || "Erreur lors de la mise à jour du mot de passe.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert("Une erreur s'est produite lors de la mise à jour du mot de passe.");
+        }
     });
 }
