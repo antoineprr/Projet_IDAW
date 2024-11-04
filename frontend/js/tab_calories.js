@@ -1,4 +1,48 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function(){
+    let today = new Date();
+    let date = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+
+    let login = sessionStorage.getItem('login');
+    if(login === null) {
+        alert("Vous n'êtes pas connecté.");
+        window.location.href = "connexion.php";
+    }
+    let prefix_api = "http://localhost-projet/backend/API";
+    $.ajax({
+        // L'URL de la requête 
+        url: prefix_api + "/utilisateurs.php/calories/" + login + "/" + date,
+
+        // La méthode d'envoi (type de requête)
+        method: "GET",
+
+        // Le format de réponse attendu
+        dataType : "json",
+    })
+    // Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+    .done(function(response){
+        // Formater les données pour le graphique
+        let chartData = response.map(item => {
+            return {
+                date: new Date(item.DAY).getTime(),
+                calories: item.CALORIES
+            };
+        });
+
+        // Créer le graphique avec les données formatées
+        createChart(chartData);
+    })
+    // Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+    .fail(function(error){
+        alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+    })
+    // Ce code sera exécuté que la requête soit un succès ou un échec
+    .always(function(){
+    });
+});
+
+
+function createChart(data) {
     am5.ready(function() {
         // Create root element
         var root = am5.Root.new("caloriesChart");
@@ -14,9 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             panY: true,
             wheelX: "panX",
             wheelY: "zoomX",
-            pinchZoomX: true,
-            paddingLeft: 0,
-            paddingRight: 1
+            pinchZoomX:true
         }));
 
         // Add cursor
@@ -24,39 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
         cursor.lineY.set("visible", false);
 
         // Create axes
-        var xRenderer = am5xy.AxisRendererX.new(root, {
-            minGridDistance: 30,
-            minorGridEnabled: true
-        });
-
-        xRenderer.labels.template.setAll({
-            rotation: -90,
-            centerY: am5.p50,
-            centerX: am5.p100,
-            paddingRight: 15
-        });
-
-        xRenderer.grid.template.setAll({
-            location: 1
-        });
-
         var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-            maxDeviation: 0.3,
+            maxDeviation: 0.2,
             baseInterval: {
                 timeUnit: "day",
                 count: 1
             },
-            renderer: xRenderer,
+            renderer: am5xy.AxisRendererX.new(root, {}),
             tooltip: am5.Tooltip.new(root, {})
         }));
 
-        var yRenderer = am5xy.AxisRendererY.new(root, {
-            strokeOpacity: 0.1
-        });
-
         var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-            maxDeviation: 0.3,
-            renderer: yRenderer
+            renderer: am5xy.AxisRendererY.new(root, {})
         }));
 
         // Create series
@@ -64,28 +85,19 @@ document.addEventListener('DOMContentLoaded', function() {
             name: "Calories",
             xAxis: xAxis,
             yAxis: yAxis,
-            valueYField: "calories",
+            valueYField: "calories",  // Make sure this matches the data field name exactly
             valueXField: "date",
             tooltip: am5.Tooltip.new(root, {
                 labelText: "{valueY}"
             })
         }));
+        
 
-        // Add data
-        var data = [
-            { date: new Date(2023, 9, 1).getTime(), calories: 2000 },
-            { date: new Date(2023, 9, 2).getTime(), calories: 1800 },
-            { date: new Date(2023, 9, 3).getTime(), calories: 2200 },
-            { date: new Date(2023, 9, 4).getTime(), calories: 2500 },
-            { date: new Date(2023, 9, 5).getTime(), calories: 2100 },
-            { date: new Date(2023, 9, 6).getTime(), calories: 2300 },
-            { date: new Date(2023, 9, 7).getTime(), calories: 1900 }
-        ];
-
+        // Set data
         series.data.setAll(data);
 
         // Make stuff animate on load
         series.appear(1000);
         chart.appear(1000, 100);
     });
-});
+}

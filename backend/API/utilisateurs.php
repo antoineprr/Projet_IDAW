@@ -179,13 +179,15 @@ function check_pswd($pdo, $login, $mdp){
 
 function get_calories_login_date($pdo, $login, $date) {
     if(user_exist($pdo, $login)){
-        $sql = "SELECT SUM(cr.QUANTITE_RATIO * (c.QUANTITE/100)) AS CALORIES, r.DATE
+        $sql = "SELECT SUM(cr.QUANTITE_RATIO * (c.QUANTITE / 100)) AS CALORIES, DATE(r.DATE) AS DAY
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
                 WHERE r.LOGIN = :login_utilisateur
                 AND cr.CODE_RATIO = 67
-                AND DATE(r.DATE) = :date_donnee
+                AND DATE(r.DATE) BETWEEN :date_donnee - INTERVAL 6 DAY AND :date_donnee
+                GROUP BY DAY
+                ORDER BY DAY DESC;
                 ";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':login_utilisateur', $login);

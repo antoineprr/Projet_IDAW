@@ -1,6 +1,13 @@
 <?php
 require_once('header_template.php');
+require_once('config.php');
 ?>
+
+<script>
+    sessionStorage.setItem('login', '<?php echo $_SESSION['login'] ?>');
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
