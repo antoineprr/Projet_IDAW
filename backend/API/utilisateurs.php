@@ -191,14 +191,15 @@ function setHeaders() {
 switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de l'url et si c'est la bonne méthode pour récupérer les GET, POST...
     case 'GET':
         $url = explode_url($_SERVER['REQUEST_URI']);
-        if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
-            $login = $url[5];
+        $size = count($url);
+        if (isset($url[$size-2]) && $url[$size-2] == 'login' && isset($url[$size-1])) {
+            $login = $url[$size-1];
             $result = get_un_utilisateurs($pdo, $login);
         } 
         
-        else if (isset($url[4]) && $url[4] == 'all' && isset($url[5]) && isset($url[6])) {
-            $login = $url[5];
-            $date = $url[6];
+        else if (isset($url[$size-3]) && $url[$size-3] == 'all' && isset($url[$size-2]) && isset($url[$size-1])) {
+            $login = $url[$size-2];
+            $date = $url[$size-1];
             $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
         }
         
