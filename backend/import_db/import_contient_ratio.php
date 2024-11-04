@@ -20,7 +20,8 @@ $file = fopen($csvFilePath, "r");
 $ref = fgetcsv($file);
 
 $ratios = [];
-for ($i = 14; $i < sizeof($ref); $i++) {
+$columnsToProcess = array_merge([12], range(14, sizeof($ref) - 1));
+foreach ($columnsToProcess as $i) {
     $ratio = $ref[$i];
     $stmt = $pdo->prepare("SELECT CODE_RATIO FROM ratio WHERE NOM_RATIO = :ratio");
     $stmt->bindParam(':ratio', $ratio);
@@ -33,7 +34,7 @@ try {
     while ($row = fgetcsv($file)) {
         $nom = $row[7];
 
-        for ($i = 14; $i < sizeof($row); $i++) {
+        foreach ($columnsToProcess as $i) {
             $ratio = $ratios[$ref[$i]] ?? null; 
             $quantite = $row[$i];
 
@@ -62,4 +63,4 @@ try {
     die('Erreur lors du traitement des données : ' . $e->getMessage());
 }
 fclose($file);
-?>
+

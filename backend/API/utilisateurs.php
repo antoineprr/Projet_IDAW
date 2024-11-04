@@ -176,6 +176,34 @@ function check_pswd($pdo, $login, $mdp){
     }
 }
 
+function get_calories_login_date($pdo, $login, $date) {
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT SUM(cr.QUANTITE_RATIO * (c.QUANTITE / 100)) AS CALORIES, DATE(r.DATE) AS DAY
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN contient_ratio cr ON cr.NOM_ALIMENT = c.NOM_ALIMENT
+                WHERE r.LOGIN = :login_utilisateur
+                AND cr.CODE_RATIO = 67
+                AND DATE(r.DATE) BETWEEN :date_donnee - INTERVAL 6 DAY AND :date_donnee
+                GROUP BY DAY
+                ORDER BY DAY DESC;
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login' on date '$date'"]));
+        }
+        return $res;
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
     header("Access-Control-Allow-Origin: *");
@@ -202,11 +230,17 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
         }
         
+        else if (isset($url[4]) && $url[4] == 'calories' && isset($url[5]) && isset($url[6])) {
+            $login = $url[5];
+            $date = $url[6];
+            $result = get_calories_login_date($pdo, $login, $date);
+        }
+        
         else {
             $result = get_utilisateurs($pdo);  // Récupérer tous les utilisateurs si aucun login spécifique
         }
 
-        
+
         setHeaders();
         http_response_code(200);
         exit(json_encode($result));
