@@ -213,6 +213,21 @@ function update_mdp($pdo, $login, $new_password) {
 }
 
 function get_ratios_percent_from_day_login($pdo, $login, $date) {
+    $sql = "SELECT COUNT(*) AS COUNT
+                FROM repas r
+                WHERE DATE(r.DATE) = :date_donnee
+                AND r.LOGIN = :login_utilisateur
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No repas found for user '$login' on date '$date'"]));
+        }
+
     if(user_exist($pdo, $login)){
         $sql = "SELECT SUM(cr.QUANTITE_RATIO) AS SUM_RATIO
                 FROM repas r
@@ -238,6 +253,10 @@ function get_ratios_percent_from_day_login($pdo, $login, $date) {
         }
         $sum_ratio = $res['SUM_RATIO'];
 
+        if($sum_ratio == 0){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login' on date '$date'"]));
+        }
 
         $sql = "SELECT rat.NOM_RATIO, (SUM(cr.QUANTITE_RATIO) / $sum_ratio)*100 AS QUANTITE
                 FROM repas r
