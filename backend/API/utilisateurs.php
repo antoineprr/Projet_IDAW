@@ -244,7 +244,7 @@ function get_ratio_of_repas_from_utilisateur_date($pdo, $login, $code) {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(!$res){
             http_response_code(404);
-            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login' on date '$date'"]));
+            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login'"]));
         }
         return $res;
     } else {

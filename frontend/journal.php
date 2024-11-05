@@ -26,6 +26,31 @@ require_once('config.php');
     <button class="btn btn-primary create-btn">Entrer un nouveau repas</button>
 </div>
 
+<div class="container flex-grow-1 mt-5" id="createMealFormContainer" style="display: none;">
+    <h2>Créer un nouveau repas</h2>
+    <form id="createMealForm">
+        <div class="form-group">
+            <label for="mealDate">Date et heure</label>
+            <input type="datetime-local" class="form-control" id="mealDate" required>
+        </div>
+        <div id="alimentsContainer">
+            <div class="form-group">
+                <label for="aliments">Aliments</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control aliment-name" placeholder="Nom de l'aliment" required>
+                    <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-secondary" id="addAliment" type="button">Ajouter un aliment</button>
+        <button type="submit" class="btn btn-primary">Créer le repas</button>
+    </form>
+</div>
+
+
 <div class="container flex-grow-1 mt-5">
     <div id="ratiosContainer" class="row">
         <!-- Les ratios seront affichés ici par JavaScript -->

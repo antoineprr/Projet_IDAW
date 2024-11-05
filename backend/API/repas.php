@@ -43,6 +43,16 @@ function add_repas($pdo, $login, $date) {
     }
 }
 
+function add_aliment_to_repas($pdo, $code_repas, $nom_aliment, $quantite) {
+    $sql = "INSERT INTO contient (CODE_REPAS, NOM_ALIMENT, QUANTITE) 
+            VALUES (:code_repas, :nom_aliment, :quantite);";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_repas', $code_repas);
+    $stmt->bindParam(':nom_aliment', $nom_aliment);
+    $stmt->bindParam(':quantite', $quantite);
+    $stmt->execute();
+}
+
 
 function setHeaders() {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
@@ -82,6 +92,14 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             http_response_code(201);
             exit(json_encode($result));
         }
+
+        else if(isset($input['code_repas']) && isset($input['nom_aliment']) && isset($input['quantite'])){
+            add_aliment_to_repas($pdo, $input['code_repas'], $input['nom_aliment'], $input['quantite']);
+            setHeaders();
+            http_response_code(201);
+            exit(json_encode(['status'=>'success', 'message'=>'aliment added to repas']));
+        }
+
         else{
             http_response_code(404);
             exit(json_encode(['status'=>'error', 'message'=>'invalid input']));
