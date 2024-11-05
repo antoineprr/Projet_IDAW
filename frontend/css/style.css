@@ -21,3 +21,34 @@ button {
     border: none;
     border-radius: 5px;
 }
+
+#aliments-table {
+    width: 75%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+#aliments-table th, #aliments-table td {
+    padding: 5px 10px;
+    text-align: left;
+    border: 1px solid #ddd; 
+}
+#aliments-table th {
+    background-color: #f2f2f2;
+}
+#aliments-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+#aliments-table .col-nom-aliment {
+    width: 75%;
+}
+
+#aliments-table .col-nom-type {
+    width: 25%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
