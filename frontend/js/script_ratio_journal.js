@@ -112,6 +112,7 @@ function getRatios(codeRepas) {
     $.ajax({
         url: prefix_api + "/utilisateurs.php/ratios_repas/" + login + "/" + codeRepas,
         method: "GET",
+
         dataType : "json",
     })
     .done(function(response){
@@ -134,7 +135,7 @@ function getRatios(codeRepas) {
         response.forEach(function(ratio) {
             table += `<tr>
                 <td>${ratio.NOM_RATIO}</td>
-                <td>${ratio.QUANTITE_RATIO}</td>
+                <td>${Number(ratio.QUANTITE_RATIO).toFixed(1)}</td>
             </tr>`;
         });
 
