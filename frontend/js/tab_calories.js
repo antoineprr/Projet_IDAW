@@ -34,7 +34,7 @@ $(document).ready(function(){
     })
     // Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
     .fail(function(error){
-        alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+        console.error(error);
     })
     // Ce code sera exécuté que la requête soit un succès ou un échec
     .always(function(){
