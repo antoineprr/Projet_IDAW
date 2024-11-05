@@ -28,19 +28,34 @@ function get_repas_by_utilisateur($pdo, $utilisateur_url) {
 
 function add_repas($pdo, $login, $date) {
     try {
-        $sql = "INSERT INTO repas (CODE_REPAS, LOGIN, DATE) VALUES (NULL, :login, :date)";
-        $request = $pdo->prepare($sql);
-        $request->bindParam(':login', $login);
-        $request->bindParam(':date', $date);
-        $request->execute();
-        return get_repas_by_utilisateur($pdo, $login);
-    } catch (PDOException $e) {
-        if ($e->getCode() == '23000') {
-            return "Erreur : L'utilisateur avec le login '$login' n'existe pas.";
-        } else {
-            throw $e;
+        try {
+            $sql = "INSERT INTO repas (CODE_REPAS, LOGIN, DATE) VALUES (NULL, :login, :date)";
+            $request = $pdo->prepare($sql);
+            $request->bindParam(':login', $login);
+            $request->bindParam(':date', $date);
+            $request->execute();
+            return $pdo->lastInsertId(); // Retourner l'ID du repas créé
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                return "Erreur : L'utilisateur avec le login '$login' n'existe pas.";
+            } else {
+                throw $e;
+            }
         }
     }
+    catch (PDOException $e) {
+        return "Erreur : " . $e->getMessage();
+    }
+}
+
+function add_aliment_to_repas($pdo, $code_repas, $nom_aliment, $quantite) {
+    $sql = "INSERT INTO contient (CODE_REPAS, NOM_ALIMENT, QUANTITE) 
+            VALUES (:code_repas, :nom_aliment, :quantite);";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_repas', $code_repas);
+    $stmt->bindParam(':nom_aliment', $nom_aliment);
+    $stmt->bindParam(':quantite', $quantite);
+    $stmt->execute();
 }
 
 
@@ -82,6 +97,14 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             http_response_code(201);
             exit(json_encode($result));
         }
+
+        else if(isset($input['code_repas']) && isset($input['nom_aliment']) && isset($input['quantite'])){
+            add_aliment_to_repas($pdo, $input['code_repas'], $input['nom_aliment'], $input['quantite']);
+            setHeaders();
+            http_response_code(201);
+            exit(json_encode(['status'=>'success', 'message'=>'aliment added to repas']));
+        }
+
         else{
             http_response_code(404);
             exit(json_encode(['status'=>'error', 'message'=>'invalid input']));
