@@ -10,7 +10,10 @@
     <script src="js/script_inscription.js"></script>
 </head>
 <body>
-    <?php require_once('header_template_creation.php') ?>
+    <?php
+    require_once('header_template_creation.php');
+    require_once('config.php');
+    ?>
     <div class="container">
         <h2>Créer un compte</h2>
         <form id="inscriptionForm" action="" onsubmit="onFormSubmit(event)">
