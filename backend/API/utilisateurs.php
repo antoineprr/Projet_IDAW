@@ -102,14 +102,12 @@ function update_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $n
     }
 }
 
-function get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date) {
+function get_aliment_repas_from_login_and_date($pdo, $login, $date) {
     if(user_exist($pdo, $login)){
-        $sql = "SELECT r.CODE_REPAS, r.DATE, a.NOM_ALIMENT, cr.QUANTITE_RATIO, rat.NOM_RATIO
+        $sql = "SELECT r.DATE, a.NOM_ALIMENT
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
-                JOIN contient_ratio cr ON a.NOM_ALIMENT = cr.NOM_ALIMENT
-                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
                 WHERE r.LOGIN = :login_utilisateur
                     AND DATE(r.DATE) = :date_donnee;
                 ";
@@ -121,6 +119,30 @@ function get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date) {
         if(!$res){
             http_response_code(404);
             exit(json_encode(['status' => 'error', 'message' => "No aliment repas ratios found for user '$login' on date '$date'"]));
+        }
+        return $res;
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
+function get_aliment_repas_from_login($pdo, $login) {
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT r.DATE, a.NOM_ALIMENT
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
+                WHERE r.LOGIN = :login_utilisateur
+                ORDER BY r.DATE DESC;
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No aliment repas ratios found for user '$login'"]));
         }
         return $res;
     } else {
@@ -195,6 +217,34 @@ function get_calories_login_date($pdo, $login, $date) {
         if(!$res){
             http_response_code(404);
             exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login' on date '$date'"]));
+        }
+        return $res;
+    } else {
+        http_response_code(404);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' not found"]));
+    }
+}
+
+function get_ratio_of_repas_from_utilisateur_date($pdo, $login, $date) {
+    if(user_exist($pdo, $login)){
+        $sql = "SELECT r.DATE, a.NOM_ALIMENT, rat.NOM_RATIO, cr.QUANTITE_RATIO
+                FROM repas r
+                JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
+                JOIN contient_ratio cr ON c.NOM_ALIMENT = cr.NOM_ALIMENT
+                JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
+                JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
+                WHERE r.LOGIN = :login_utilisateur
+                AND DATE(r.DATE) = :date_donnee
+                ORDER BY r.DATE DESC;
+                ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':login_utilisateur', $login);
+        $stmt->bindParam(':date_donnee', $date);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(!$res){
+            http_response_code(404);
+            exit(json_encode(['status' => 'error', 'message' => "No ratios found for user '$login' on date '$date'"]));
         }
         return $res;
     } else {
@@ -313,7 +363,7 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         else if (isset($url[$size-3]) && $url[$size-3] == 'all' && isset($url[$size-2]) && isset($url[$size-1])) {
             $login = $url[$size-2];
             $date = $url[$size-1];
-            $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
+            $result = get_aliment_repas_from_login_and_date($pdo, $login, $date);
         }
         
         else if (isset($url[$size-3]) && $url[$size-3] == 'calories' && isset($url[$size-2]) && isset($url[$size-1])) {
@@ -326,6 +376,17 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $login = $url[$size-2];
             $date = $url[$size-1];
             $result = get_ratios_percent_from_day_login($pdo, $login, $date);
+        }
+
+        else if (isset($url[$size-2]) && $url[$size-2] == 'repas' && isset($url[$size-1])) {
+            $login = $url[$size-1];
+            $result = get_aliment_repas_from_login($pdo, $login);
+        }
+
+        else if (isset($url[$size-3]) && $url[$size-3] == 'ratios_repas' && isset($url[$size-2]) && isset($url[$size-1])) {
+            $login = $url[$size-2];
+            $date = $url[$size-1];
+            $result = get_ratio_of_repas_from_utilisateur_date($pdo, $login, $date);
         }
         
         else {
