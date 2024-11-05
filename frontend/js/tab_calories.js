@@ -9,7 +9,6 @@ $(document).ready(function(){
         window.location.href = "connexion.php";
     }
     let prefix_api = window.prefix_api;
-    alert(prefix_api);
     $.ajax({
         // L'URL de la requête 
         url: prefix_api + "/utilisateurs.php/calories/" + login + "/" + date,

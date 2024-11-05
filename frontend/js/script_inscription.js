@@ -1,5 +1,6 @@
-let prefix_api = window.prefix_api;
+
 $(document).ready(function() {
+    let prefix_api = window.prefix_api;
     chargerTranchesAge();
     chargerPratiqueSport();
     chargerSexe();
@@ -8,7 +9,7 @@ $(document).ready(function() {
 function chargerTranchesAge() {
     $.ajax({
         type: 'GET',
-        url: `${prefix_api}/tranche-age.php`,
+        url: prefix_api+'/tranche-age.php',
         dataType: 'json',
         success: function(data) {
             $('#tranche_age').empty();
