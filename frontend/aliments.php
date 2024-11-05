@@ -17,30 +17,31 @@ require_once('config.php');
             <!-- Les données seront insérées ici -->
         </tbody>
     </table>
-        <div>
+    <div>
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" id="prev">&laquo;</a>
+            <li class="page-item disabled">
+                <a class="page-link" href="#">&laquo;</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
             </li>
             <li class="page-item">
-                <a class="page-link">1</a>
+                <a class="page-link" href="#">2</a>
             </li>
             <li class="page-item">
-                <a class="page-link">2</a>
+                <a class="page-link" href="#">3</a>
             </li>
             <li class="page-item">
-                <a class="page-link">3</a>
+                <a class="page-link" href="#">4</a>
             </li>
             <li class="page-item">
-                <a class="page-link">4</a>
+                <a class="page-link" href="#">5</a>
             </li>
             <li class="page-item">
-                <a class="page-link">5</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" id="next">&raquo;</a>
+                <a class="page-link" href="#">&raquo;</a>
             </li>
         </ul>
     </div>
+
 </body>
 </html>

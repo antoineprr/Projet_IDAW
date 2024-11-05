@@ -1,71 +1,108 @@
-$(document).ready(function(){
-    let prefix_api = window.prefix_api;
-    var currentPage = 1;
-    totalPages = 31;
-    
-    function updatePagination() {
-        var pagination = $('.pagination');
-        pagination.empty();
-        var prevClass = currentPage === 1 ? 'disabled' : '';
-        pagination.append(`<li class="${prevClass}"><a href="#">«</a></li>`);
-        for (var i = 1; i <= totalPages; i++) {
-            var activeClass = currentPage === i ? 'active' : '';
-            pagination.append(`<li class="${activeClass}"><a href="#">${i}</a></li>`);
-        }
-        var nextClass = currentPage === totalPages ? 'disabled' : '';
-        pagination.append(`<li class="${nextClass}"><a href="#">»</a></li>`);
-    }
-
-    $('.pagination').on('click', 'li a', function(event) {
-        event.preventDefault();
-        var pageItem = $(this).parent();
-        var pageText = $(this).text();
-
-        if (pageItem.hasClass('disabled') || pageItem.hasClass('active')) {
-            return;
-        }
-
-        if (pageText == '«') {
-            loadPage(currentPage - 1);
-        } else if (pageText == '»') {
-            loadPage(currentPage + 1);
-        } else {
-            loadPage(parseInt(pageText));
-        }
-    });
+$(document).ready(function() {
+    const prefix_api = window.prefix_api;
+    let currentPage = 1;
+    let totalPages = loadTotalPages();
+    const maxVisiblePages = 5;
+    let limit = 100;
 
     loadPage(currentPage);
-});
 
-function loadPage(page) {
-    currentPage = page;
-    loadAliments(page);
-}
+    function loadTotalPages(){
+        $.ajax({
+            type: 'GET',
+            url: `${prefix_api}/aliments.php`,
+            dataType: 'json',
+            success: function(data) {
+                totalPages = Math.floor(data.length / limit) + 1;
+                console.log(totalPages);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 
-function loadAliments(page){
-    $.ajax({
-        type: 'GET',
-        url: `${prefix_api}/aliments.php`,
-        dataType: 'json',
-        data: {
-            page: page,
-            limit: 100
-        },
-        success: function(data){
-            var aliments = data;
-            var tbody = $('#aliments-table tbody');
-            tbody.empty();
-            $.each(aliments, function(index, aliment){
-                tbody.append('<tr>'+
-                    '<td>'+aliment.NOM_ALIMENT+'</td>'+
-                    '<td>'+aliment.NOM_TYPE+'</td>'+
-                    '</tr>');
-            });
-            $('#page-num').text(page);
-            updatePagination();
-        },
-        error: function(xhr, status, error){
-            console.error(error);
+    function loadPage(page) {
+        currentPage = page;
+        loadAliments(page);
+    }
+
+    function loadAliments(page) {
+        $.ajax({
+            type: 'GET',
+            url: `${prefix_api}/aliments.php`,
+            dataType: 'json',
+            data: {
+                page: page,
+                limit: limit
+            },
+            success: function(data) {
+                let tbody = $('#aliments-table tbody');
+                tbody.empty();
+                $.each(data, function(index, aliment) {
+                    tbody.append(`<tr><td>${aliment.NOM_ALIMENT}</td><td>${aliment.NOM_TYPE}</td></tr>`);
+                });
+                updatePagination();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function updatePagination() {
+        let pagination = $('.pagination');
+        pagination.empty();
+
+        // Calculate the start and end pages for the pagination display
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        // Adjust startPage if we're near the end
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
-    });
-}
+
+        // First button
+        let firstDisabled = currentPage === 1 ? 'disabled' : '';
+        let firstButton = $(`<li class="page-item ${firstDisabled}"><a class="page-link" href="#">First</a></li>`);
+        firstButton.on('click', function() {
+            if (currentPage !== 1) loadPage(1);
+        });
+        pagination.append(firstButton);
+
+        // Previous button
+        let prevDisabled = currentPage === 1 ? 'disabled' : '';
+        let prevButton = $(`<li class="page-item ${prevDisabled}"><a class="page-link" href="#">&laquo;</a></li>`);
+        prevButton.on('click', function() {
+            if (currentPage > 1) loadPage(currentPage - 1);
+        });
+        pagination.append(prevButton);
+
+        // Page number buttons within the range
+        for (let i = startPage; i <= endPage; i++) {
+            let activeClass = currentPage === i ? 'active' : '';
+            let pageButton = $(`<li class="page-item ${activeClass}"><a class="page-link" href="#">${i}</a></li>`);
+            pageButton.on('click', function() {
+                loadPage(i);
+            });
+            pagination.append(pageButton);
+        }
+
+        // Next button
+        let nextDisabled = currentPage === totalPages ? 'disabled' : '';
+        let nextButton = $(`<li class="page-item ${nextDisabled}"><a class="page-link" href="#">&raquo;</a></li>`);
+        nextButton.on('click', function() {
+            if (currentPage < totalPages) loadPage(currentPage + 1);
+        });
+        pagination.append(nextButton);
+
+        // Last button
+        let lastDisabled = currentPage === totalPages ? 'disabled' : '';
+        let lastButton = $(`<li class="page-item ${lastDisabled}"><a class="page-link" href="#">Last</a></li>`);
+        lastButton.on('click', function() {
+            if (currentPage !== totalPages) loadPage(totalPages);
+        });
+        pagination.append(lastButton);
+    }
+});

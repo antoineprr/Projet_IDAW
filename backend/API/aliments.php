@@ -108,12 +108,14 @@ switch($_SERVER["REQUEST_METHOD"]) {
         $aliment_url = htmlspecialchars($aliment_url, ENT_QUOTES, 'UTF-8');
         
         $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-        parse_str($query, $data);
-
+        if (!$query === false) {
+            parse_str($query, $data);
+        }
+        
         if (isset($data['page']) && isset($data['limit'])) {
             $result = get_aliments_paginated($pdo, $data['page'], $data['limit']);
         }
-        elseif ($aliment_url=='aliments' || $aliment_url==''){
+        elseif ($aliment_url=='aliments' || $aliment_url=='' || $aliment_url=='aliments.php' ){
             $result = get_aliments($pdo);
         } elseif (!is_numeric($aliment_url)){
             $aliment_url = urldecode($aliment_url);
