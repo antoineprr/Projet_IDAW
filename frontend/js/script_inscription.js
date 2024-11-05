@@ -127,7 +127,11 @@ function onFormSubmit(event) {
     },
     error: function(xhr, status, error) {
         console.error(xhr.responseText);
-        alert("Une erreur s'est produite lors de la création du compte.");
+        if(xhr.status === 409) {
+            alert("Ce nom d'utilisateur est déjà utilisé.");
+        } else {
+            alert("Une erreur s'est produite lors de la création du compte.");
+        }
     }
     });
 }
