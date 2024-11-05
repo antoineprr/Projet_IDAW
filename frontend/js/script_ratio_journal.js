@@ -1,13 +1,12 @@
 $(document).ready(function(){
     let login = sessionStorage.getItem('login');
     if (!login) {
-        alert("Vous n'êtes pas connecté.");
         window.location.href = "connexion.php";
         return;
     }
 
     let prefix_api = window.prefix_api;
-    let itemsPerPage = 10; // Nombre d'éléments par page
+    let itemsPerPage = 5; // Nombre d'éléments par page
     let currentPage = 1; // Page actuelle
     let groupedMeals = []; // Variable pour stocker les repas groupés
 
@@ -32,7 +31,6 @@ $(document).ready(function(){
             tableBody.append(row);
         });
 
-        // Ajouter un gestionnaire d'événements pour les boutons "Voir les ratios"
         $('.ratio-btn').on('click', function() {
             let codeRepas = $(this).data('code-repas');
             getRatios(codeRepas);
@@ -76,16 +74,10 @@ $(document).ready(function(){
     }
 
     $.ajax({
-        // L'URL de la requête 
         url: prefix_api + "/utilisateurs.php/repas/" + login,
-
-        // La méthode d'envoi (type de requête)
         method: "GET",
-
-        // Le format de réponse attendu
         dataType : "json",
     })
-    // Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
     .done(function(response){
         // Regrouper les repas par CODE_REPAS
         let groupedMealsMap = {};
@@ -93,7 +85,7 @@ $(document).ready(function(){
             if (!groupedMealsMap[item.CODE_REPAS]) {
                 groupedMealsMap[item.CODE_REPAS] = {
                     CODE_REPAS: item.CODE_REPAS,
-                    DATE: item.DATE.split(' ')[0], // Extraire la date sans l'heure
+                    DATE: item.DATE.split(' ')[0],
                     NOM_ALIMENTS: []
                 };
             }
@@ -106,13 +98,10 @@ $(document).ready(function(){
         renderTable(groupedMeals, currentPage);
         renderPagination(totalItems);
     })
-    // Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
     .fail(function(error){
-        alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+        console.error("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
     })
-    // Ce code sera exécuté que la requête soit un succès ou un échec
     .always(function(){
-        console.log("Requête effectuée");
     });
 });
 
@@ -121,18 +110,11 @@ function getRatios(codeRepas) {
     let login = sessionStorage.getItem('login');
     let prefix_api = window.prefix_api;
     $.ajax({
-        // L'URL de la requête 
         url: prefix_api + "/utilisateurs.php/ratios_repas/" + login + "/" + codeRepas,
-
-        // La méthode d'envoi (type de requête)
         method: "GET",
-
-        // Le format de réponse attendu
         dataType : "json",
     })
     .done(function(response){
-        console.log("Réponse de l'API pour les ratios:", response); // Log pour déboguer
-
         // Vider la section des ratios avant d'ajouter les nouvelles données
         let ratiosContainer = $('#ratiosContainer');
         ratiosContainer.empty();
@@ -160,6 +142,6 @@ function getRatios(codeRepas) {
         ratiosContainer.append(table);
     })
     .fail(function(error){
-        alert("La requête pour les ratios s'est terminée en échec. Infos : " + JSON.stringify(error));
+        console.error("La requête pour les ratios s'est terminée en échec. Infos : " + JSON.stringify(error));
     });
 }

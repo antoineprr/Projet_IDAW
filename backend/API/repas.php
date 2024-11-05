@@ -28,18 +28,23 @@ function get_repas_by_utilisateur($pdo, $utilisateur_url) {
 
 function add_repas($pdo, $login, $date) {
     try {
-        $sql = "INSERT INTO repas (CODE_REPAS, LOGIN, DATE) VALUES (NULL, :login, :date)";
-        $request = $pdo->prepare($sql);
-        $request->bindParam(':login', $login);
-        $request->bindParam(':date', $date);
-        $request->execute();
-        return get_repas_by_utilisateur($pdo, $login);
-    } catch (PDOException $e) {
-        if ($e->getCode() == '23000') {
-            return "Erreur : L'utilisateur avec le login '$login' n'existe pas.";
-        } else {
-            throw $e;
+        try {
+            $sql = "INSERT INTO repas (CODE_REPAS, LOGIN, DATE) VALUES (NULL, :login, :date)";
+            $request = $pdo->prepare($sql);
+            $request->bindParam(':login', $login);
+            $request->bindParam(':date', $date);
+            $request->execute();
+            return $pdo->lastInsertId(); // Retourner l'ID du repas créé
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                return "Erreur : L'utilisateur avec le login '$login' n'existe pas.";
+            } else {
+                throw $e;
+            }
         }
+    }
+    catch (PDOException $e) {
+        return "Erreur : " . $e->getMessage();
     }
 }
 

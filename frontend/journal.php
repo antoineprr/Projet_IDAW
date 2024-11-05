@@ -17,8 +17,8 @@ require_once('config.php');
             <!-- Les données seront insérées ici par JavaScript -->
         </tbody>
     </table>
-    <div id="ratiosContainer" class="row">
-        <!-- Les ratios seront affichés ici par JavaScript -->
+    <div id="paginationContainer">
+        <!-- La pagination sera insérée ici par JavaScript -->
     </div>
 </div>
 
@@ -34,17 +34,19 @@ require_once('config.php');
             <input type="datetime-local" class="form-control" id="mealDate" required>
         </div>
         <div id="alimentsContainer">
-            <div class="form-group">
-                <label for="aliments">Aliments</label>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control aliment-name" placeholder="Nom de l'aliment" required>
-                    <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
-                    <div class="input-group-append">
-                        <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
-                    </div>
-                </div>
+    <div class="form-group">
+        <label for="aliments">Aliments</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control aliment-search" placeholder="Rechercher un aliment" required>
+            <input type="hidden" class="aliment-id">
+            <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
+            <div class="input-group-append">
+                <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
             </div>
+            <div class="dropdown-menu aliment-dropdown"></div>
         </div>
+    </div>
+</div>
         <button class="btn btn-secondary" id="addAliment" type="button">Ajouter un aliment</button>
         <button type="submit" class="btn btn-primary">Créer le repas</button>
     </form>
