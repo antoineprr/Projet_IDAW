@@ -1,4 +1,4 @@
-const prefix_api = 'http://localhost/PROJET_IDAW/backend/API';
+let prefix_api = window.prefix_api;
 $(document).ready(function() {
     chargerTranchesAge();
     chargerPratiqueSport();

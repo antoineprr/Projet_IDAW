@@ -8,7 +8,8 @@ $(document).ready(function(){
         alert("Vous n'êtes pas connecté.");
         window.location.href = "connexion.php";
     }
-    let prefix_api = "http://localhost-projet/backend/API";
+    let prefix_api = window.prefix_api;
+    alert(prefix_api);
     $.ajax({
         // L'URL de la requête 
         url: prefix_api + "/utilisateurs.php/calories/" + login + "/" + date,

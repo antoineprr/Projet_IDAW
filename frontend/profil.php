@@ -1,5 +1,6 @@
 <?php
 require_once('header_template.php');
+require_once('config.php');
 ?>
 <script>   
     const login = '<?php echo $_SESSION['login']; ?>';
