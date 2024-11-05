@@ -319,8 +319,6 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         else if (isset($url[$size-3]) && $url[$size-3] == 'calories' && isset($url[$size-2]) && isset($url[$size-1])) {
             $login = $url[$size-2];
             $date = $url[$size-1];
-            echo $login;
-            echo $date;
             $result = get_calories_login_date($pdo, $login, $date);
         }
 
