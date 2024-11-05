@@ -52,6 +52,10 @@ function get_un_utilisateurs($pdo, $login) {
 }
 
 function add_utilisateur($pdo, $login, $code_age, $code_sexe, $code_sport, $mdp, $nom, $prenom, $date_naissance, $email){
+    if(user_exist($pdo, $login)){
+        http_response_code(409);
+        exit(json_encode(['status' => 'error', 'message' => "Utilisateur '$login' already exists"]));
+    }
     $sql = "INSERT INTO utilisateur (LOGIN, CODE_AGE, CODE_SEXE, CODE_SPORT, MDP, NOM, PRENOM, DATE_NAISSANCE, EMAIL) VALUES (:login, :code_age, :code_sexe, :code_sport, :mdp, :nom, :prenom, :date_naissance, :email)";
     $add = $pdo->prepare($sql);
     $add->bindParam(':login', $login);

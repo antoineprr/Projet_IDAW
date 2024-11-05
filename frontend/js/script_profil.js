@@ -175,7 +175,11 @@ function onPasswordFormSubmit(event) {
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
-            alert("Une erreur s'est produite lors de la mise à jour du mot de passe.");
+            if(xhr.status === 401){
+                alert("Le mot de passe actuel est incorrect.");
+            } else {
+                alert("Une erreur s'est produite lors de la mise à jour du mot de passe.");
+            }
         }
     });
 }
