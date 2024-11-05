@@ -316,15 +316,17 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $result = get_aliment_repas_ratios_from_login_and_date($pdo, $login, $date);
         }
         
-        else if (isset($url[4]) && $url[4] == 'calories' && isset($url[5]) && isset($url[6])) {
-            $login = $url[5];
-            $date = $url[6];
+        else if (isset($url[$size-3]) && $url[$size-3] == 'calories' && isset($url[$size-2]) && isset($url[$size-1])) {
+            $login = $url[$size-2];
+            $date = $url[$size-1];
+            echo $login;
+            echo $date;
             $result = get_calories_login_date($pdo, $login, $date);
         }
 
-        else if (isset($url[4]) && $url[4] == 'daily_ratios' && isset($url[5]) && isset($url[6])) {
-            $login = $url[5];
-            $date = $url[6];
+        else if (isset($url[$size-3]) && $url[$size-3] == 'daily_ratios' && isset($url[$size-2]) && isset($url[$size-1])) {
+            $login = $url[$size-2];
+            $date = $url[$size-1];
             $result = get_ratios_percent_from_day_login($pdo, $login, $date);
         }
         
@@ -358,8 +360,8 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         }
     case 'DELETE':
         $url = explode_url($_SERVER['REQUEST_URI']);
-        if (isset($url[4]) && $url[4] == 'login' && isset($url[5])) {
-            $login = $url[5];
+        if (isset($url[$size-2]) && $url[$size-2] == 'login' && isset($url[$size-1])) {
+            $login = $url[$size-1];
             delete_utilisateur($pdo, $login);
         } else {
             http_response_code(400);
