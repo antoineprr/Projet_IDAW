@@ -127,6 +127,7 @@ $('#createMealForm').on('submit', function(e) {
             });
 
             $('#createMealFormContainer').hide();
+            location.reload();
         },
         error: function(error) {
             console.error("Erreur lors de la création du repas. Infos : " + JSON.stringify(error));
