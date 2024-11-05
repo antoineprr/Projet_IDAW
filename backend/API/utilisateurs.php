@@ -129,7 +129,7 @@ function get_aliment_repas_from_login_and_date($pdo, $login, $date) {
 
 function get_aliment_repas_from_login($pdo, $login) {
     if(user_exist($pdo, $login)){
-        $sql = "SELECT r.DATE, a.NOM_ALIMENT
+        $sql = "SELECT r.CODE_REPAS ,r.DATE, a.NOM_ALIMENT
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
@@ -225,21 +225,21 @@ function get_calories_login_date($pdo, $login, $date) {
     }
 }
 
-function get_ratio_of_repas_from_utilisateur_date($pdo, $login, $date) {
+function get_ratio_of_repas_from_utilisateur_date($pdo, $login, $code) {
     if(user_exist($pdo, $login)){
-        $sql = "SELECT r.DATE, a.NOM_ALIMENT, rat.NOM_RATIO, cr.QUANTITE_RATIO
+        $sql = "SELECT rat.NOM_RATIO, SUM(cr.QUANTITE_RATIO) AS QUANTITE_RATIO
                 FROM repas r
                 JOIN contient c ON r.CODE_REPAS = c.CODE_REPAS
                 JOIN contient_ratio cr ON c.NOM_ALIMENT = cr.NOM_ALIMENT
                 JOIN ratio rat ON cr.CODE_RATIO = rat.CODE_RATIO
                 JOIN aliment a ON c.NOM_ALIMENT = a.NOM_ALIMENT
                 WHERE r.LOGIN = :login_utilisateur
-                AND DATE(r.DATE) = :date_donnee
-                ORDER BY r.DATE DESC;
+                AND r.CODE_REPAS = :code_repas
+                GROUP BY rat.NOM_RATIO;
                 ";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':login_utilisateur', $login);
-        $stmt->bindParam(':date_donnee', $date);
+        $stmt->bindParam(':code_repas', $code);
         $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(!$res){
