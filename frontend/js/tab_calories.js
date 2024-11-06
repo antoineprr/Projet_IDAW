@@ -11,7 +11,7 @@ $(document).ready(function(){
     let prefix_api = window.prefix_api;
     $.ajax({
         // L'URL de la requête 
-        url: prefix_api + "/utilisateurs.php/calories/" + login + "/" + date,
+        url: prefix_api + "/utilisateurs.php/calories/" + login,
 
         // La méthode d'envoi (type de requête)
         method: "GET",
