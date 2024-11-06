@@ -36,10 +36,10 @@ require_once('config.php');
         <div id="alimentsContainer">
     <div class="form-group">
         <label for="aliments">Aliments</label>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control aliment-search" placeholder="Rechercher un aliment" required>
+        <div class="input-group mb-3 align-items-center">
+            <input type="text" class="form-control col-3 aliment-search"  placeholder="Rechercher un aliment" required>
             <input type="hidden" class="aliment-id">
-            <input type="number" class="form-control aliment-quantity" placeholder="Quantité" style="border-radius: 0 5px 5px 0;" required>
+            <input type="number" class="form-control col-3 aliment-quantity" placeholder="Quantité" required>
             <div class="input-group-append">
                 <button class="btn btn-danger remove-aliment" type="button" style="margin-left: 10px">Supprimer</button>
             </div>

@@ -52,3 +52,7 @@ button {
     justify-content: center;
     margin-top: 20px;
 }
+
+.aliment-search, .aliment-quantity {
+    height: calc(1.5em + .75rem + 2px); /* Correspond à la hauteur par défaut des champs de formulaire Bootstrap */
+}

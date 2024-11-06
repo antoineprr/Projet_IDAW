@@ -22,11 +22,11 @@ $('#addAliment').on('click', function() {
     let alimentHtml = `
         <div class="form-group">
             <div class="input-group mb-3">
-                <input type="text" class="form-control aliment-search" placeholder="Rechercher un aliment" required>
+                <input type="text" class="form-control col-3 aliment-search" placeholder="Rechercher un aliment" required>
                 <input type="hidden" class="form-control aliment-id">
-                <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
+                <input type="number" class="form-control col-3 aliment-quantity" placeholder="Quantité" required>
                 <div class="input-group-append">
-                    <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
+                    <button class="btn btn-danger remove-aliment" style="margin-left: 10px" type="button">Supprimer</button>
                 </div>
                 <div class="dropdown-menu aliment-dropdown"></div>
             </div>
