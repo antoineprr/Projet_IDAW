@@ -23,7 +23,7 @@ button {
 }
 
 #aliments-table {
-    width: 85%;
+    width: 90%;
     margin: 0 auto;
     border-collapse: collapse;
 }
@@ -40,17 +40,66 @@ button {
 }
 
 #aliments-table .col-nom-aliment {
-    width: 75%;
+    width: 65%;
 }
 
 #aliments-table .col-nom-type {
     width: 25%;
 }
 
+#aliments-table .col-button {
+    width: 10%;
+    vertical-align: middle;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    position: relative;
+    z-index: 10; 
+}
+
+/* Modal styles */
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.custom-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+}
+
+.custom-modal-header, .custom-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.custom-close:hover,
+.custom-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .aliment-search, .aliment-quantity {

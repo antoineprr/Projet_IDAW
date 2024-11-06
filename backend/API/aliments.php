@@ -51,6 +51,21 @@ function get_aliments_paginated($pdo, $page, $limit) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function get_aliments_paginated_by_type($pdo, $page, $limit, $type) {
+    $offset = ($page - 1) * $limit;
+    $sql = "SELECT a.NOM_ALIMENT, t.NOM_TYPE
+            FROM aliment a
+            JOIN type_aliment t ON a.CODE_TYPE = t.CODE_TYPE 
+            WHERE t.CODE_TYPE = :type
+            LIMIT :limit OFFSET :offset";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':type', $type, PDO::PARAM_INT); // Added binding for :type
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function aliment_exists($pdo, $name) {
     $sql = "SELECT COUNT(*) FROM aliment WHERE NOM_ALIMENT = :name";
     $stmt = $pdo->prepare($sql);
@@ -113,7 +128,11 @@ switch($_SERVER["REQUEST_METHOD"]) {
         }
         
         if (isset($data['page']) && isset($data['limit'])) {
-            $result = get_aliments_paginated($pdo, $data['page'], $data['limit']);
+            if (isset($data['type']) && $data['type'] !== '') {
+                $result = get_aliments_paginated_by_type($pdo, $data['page'], $data['limit'], $data['type']);
+            } else {
+                $result = get_aliments_paginated($pdo, $data['page'], $data['limit']);
+            }
         }
         elseif ($aliment_url=='aliments' || $aliment_url=='' || $aliment_url=='aliments.php' ){
             $result = get_aliments($pdo);
@@ -122,7 +141,6 @@ switch($_SERVER["REQUEST_METHOD"]) {
             $aliment_url = str_replace("-", " ", $aliment_url);
             $result = get_aliment_by_name($pdo, $aliment_url);
         }
-
         else{
             $result = get_aliment_by_code_type($pdo, $aliment_url);
         }
