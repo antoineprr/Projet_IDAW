@@ -201,7 +201,7 @@ function check_pswd($pdo, $login, $mdp){
     }
 }
 
-function get_calories_login_date($pdo, $login, $date) {
+function get_calories_login($pdo, $login) {
     if(user_exist($pdo, $login)){
         $sql = "SELECT SUM(cr.QUANTITE_RATIO * (c.QUANTITE / 100)) AS CALORIES, DATE(r.DATE) AS DAY
                 FROM repas r
@@ -220,7 +220,7 @@ function get_calories_login_date($pdo, $login, $date) {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(!$res){
             http_response_code(404);
-            exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login' on date '$date'"]));
+            exit(json_encode(['status' => 'error', 'message' => "No calories found for user '$login'"]));
         }
         return $res;
     } else {
@@ -370,10 +370,9 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
             $result = get_aliment_repas_from_login_and_date($pdo, $login, $date);
         }
         
-        else if (isset($url[$size-3]) && $url[$size-3] == 'calories' && isset($url[$size-2]) && isset($url[$size-1])) {
-            $login = $url[$size-2];
-            $date = $url[$size-1];
-            $result = get_calories_login_date($pdo, $login, $date);
+        else if (isset($url[$size-2]) && $url[$size-2] == 'calories' && isset($url[$size-1])) {
+            $login = $url[$size-1];
+            $result = get_calories_login($pdo, $login);
         }
 
         else if (isset($url[$size-3]) && $url[$size-3] == 'daily_ratios' && isset($url[$size-2]) && isset($url[$size-1])) {
