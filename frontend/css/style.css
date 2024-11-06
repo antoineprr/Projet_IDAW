@@ -56,3 +56,15 @@ button {
 .aliment-search, .aliment-quantity {
     height: calc(1.5em + .75rem + 2px); /* Correspond à la hauteur par défaut des champs de formulaire Bootstrap */
 }
+
+.input-group {
+    position: relative;
+}
+
+.aliment-dropdown {
+    position: absolute;
+    top: 100%; /* Ajuste la position pour qu'elle apparaisse en dessous */
+    left: 0;
+    z-index: 5; /* Ajuste ce niveau si nécessaire pour le positionnement */
+    display: none; /* Par défaut, cachée */
+}

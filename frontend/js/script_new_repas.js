@@ -47,7 +47,7 @@ $(document).on('input', '.aliment-search', function() {
 
     if (searchQuery.length > 0) {
         let filteredAliments = alimentsList.filter(aliment => aliment.NOM_ALIMENT.toLowerCase().includes(searchQuery));
-        filteredAliments.forEach(aliment => {
+        filteredAliments.slice(0,10).forEach(aliment => {
             dropdownMenu.append(`<a class="dropdown-item" href="#" data-id="${aliment.ID_ALIMENT}">${aliment.NOM_ALIMENT}</a>`);
         });
         dropdownMenu.show();
