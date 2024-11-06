@@ -2,7 +2,7 @@ let alimentsList = [];
 
 // Récupérer tous les aliments depuis l'API
 $.ajax({
-    url: prefix_api + "/aliments",
+    url: prefix_api + "/aliments.php",
     method: "GET",
     dataType: "json",
     success: function(response) {
@@ -97,7 +97,7 @@ $('#createMealForm').on('submit', function(e) {
 
     // Envoyer les données du repas à l'API pour créer le repas
     $.ajax({
-        url: prefix_api + "/repas",
+        url: prefix_api + "/repas.php",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(mealData),
@@ -114,7 +114,7 @@ $('#createMealForm').on('submit', function(e) {
 
 
                 $.ajax({
-                    url: prefix_api + "/repas",
+                    url: prefix_api + "/repas.php",
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(alimentData),

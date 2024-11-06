@@ -68,7 +68,7 @@ function chargerSexe() {
 function chargerDonnees() {
     $.ajax({
         type: 'GET',
-        url: `${prefix_api}/utilisateurs/login/${login}`,
+        url: `${prefix_api}/utilisateurs.php/login/${login}`,
         dataType: 'json',
         success: function(data) {
             if (data.length > 0) {
@@ -112,7 +112,7 @@ function onFormSubmit(event) {
 
     $.ajax({
     type: 'PUT',
-    url: `${prefix_api}/utilisateurs/login/${login}`,
+    url: `${prefix_api}/utilisateurs.php/login/${login}`,
     dataType: 'json',
     contentType: "application/json; charset=utf-8",
     data: JSON.stringify({
