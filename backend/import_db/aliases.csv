@@ -1,29 +1,29 @@
 Alias,Name,Login,Email,Mot de Passe,Date de Naissance
-BEN,OBI-WAN,obiwan,obi-wan@starwars.com,MDPObiWan,1970-05-25
-BEN,KYLO REN,kylo.ren,kylo-ren@starwars.com,MDPKyloRen,1985-07-20
-SEE-THREEPIO,C-3PO,c3po1,see-threepio@starwars.com,MDPC3PO,1977-05-25
-THREEPIO,C-3PO,c3po2,threepio@starwars.com,MDPC3PO,1977-05-25
-ARTOO-DETOO,R2-D2,r2d2-1,artoo-detoo@starwars.com,MDPR2D2,1977-05-25
-ARTOO,R2-D2,r2d2-2,artoo@starwars.com,MDPR2D2,1977-05-25
-PALPATINE,EMPEROR,emperor,palpatine@starwars.com,MDPEmpereur,1940-04-19
-DARTH SIDIOUS,EMPEROR,darth.sidious,darth-sidious@starwars.com,MDPSidious,1940-04-19
-BAIL,BAIL ORGANA,bailorgana,bail-organa@starwars.com,MDPBailOrgana,1955-02-12
-MACE,MACE WINDU,macewindu1,mace-windu@starwars.com,MDPMaceWindu,1960-03-15
-WINDU,MACE WINDU,macewindu2,windu@starwars.com,MDPMaceWindu,1960-03-15
-MACE-WINDU,MACE WINDU,macewindu3,mace-windu@starwars.com,MDPMaceWindu,1960-03-15
-NUTE,NUTE GUNRAY,gunray,nute-gunray@starwars.com,MDPNuteGunray,1935-06-08
-AUNT BERU,BERU,beru,aunt-beru@starwars.com,MDPBeru,1948-11-11
-DOOKU,COUNT DOOKU,countdooku,dooku@starwars.com,MDPCountDooku,1932-08-02
-BOBA,BOBA FETT,bobafett,boba-fett@starwars.com,MDPBobaFett,1980-12-16
-JANGO,JANGO FETT,jangofett,jango-fett@starwars.com,MDPJangoFett,1955-09-25
-PANAKA,CAPTAIN PANAKA,panaka,panaka@starwars.com,MDPPanaka,1960-04-05
-KI-ADI,KI-ADI-MUNDI,kiadimundi,ki-adi-mundi@starwars.com,MDPKiAdiMundi,1952-10-10
-BIBBLE,SIO BIBBLE,siobibble,sio-bibble@starwars.com,MDPSioBibble,1945-03-28
-ON MEDON,TION MEDON,tionmedon,tion-medon@starwars.com,MDPTionMedon,1957-07-17
-BIB,BIB FORTUNA,bibfortuna,bib-fortuna@starwars.com,MDPBibFortuna,1950-09-01
-CHEWIE,CHEWBACCA,chewbacca,chewie@starwars.com,MDPChewbacca,1956-05-19
-VADER,DARTH VADER,darthvader,vader@starwars.com,MDPDarthVader,1941-01-31
-ACKBAR,ADMIRAL ACKBAR,ackbar,ackbar@starwars.com,MDPAckbar,1947-05-15
-FN-2187,FINN,finn,finn@starwars.com,MDPFinn,1990-11-28
-UNKAR,UNKAR PLUTT,unkarplutt,unkar-plutt@starwars.com,MDPUnkarPlutt,1970-09-30
-YOUNG GIRL,REY,rey,rey@starwars.com,MDPRey,1992-04-10
+BEN,OBI-WAN,obiwan,obi-wan@starwars.com,$2y$10$jx56.3qPdDu5dPV2FpW3FefBbIp84f1eY4XzuML5XeMA.1k9UhuQu,1970-05-25
+BEN,KYLO REN,kylo.ren,kylo-ren@starwars.com,$2y$10$lplkXv5oep/Z.s64Bho3O.OXmVzJBefEzLs5IjvmmZ0bbEMxDod/y,1985-07-20
+SEE-THREEPIO,C-3PO,c3po1,see-threepio@starwars.com,$2y$10$5yJL8mF1TsTelCgK/qdqx.QByxuYDVDWOqVQdCxy6ioaI5sg4JLHu,1977-05-25
+THREEPIO,C-3PO,c3po2,threepio@starwars.com,$2y$10$5yJL8mF1TsTelCgK/qdqx.QByxuYDVDWOqVQdCxy6ioaI5sg4JLHu,1977-05-25
+ARTOO-DETOO,R2-D2,r2d2-1,artoo-detoo@starwars.com,$2y$10$JWaxOKqIH7KXfJqId8eCNeQqjFpydKDtyzwGm4nXIaShRkISMkfCS,1977-05-25
+ARTOO,R2-D2,r2d2-2,artoo@starwars.com,$2y$10$JWaxOKqIH7KXfJqId8eCNeQqjFpydKDtyzwGm4nXIaShRkISMkfCS,1977-05-25
+PALPATINE,EMPEROR,emperor,palpatine@starwars.com,$2y$10$7WeHpPM8aO7ZmFPpg10.TelgCPnHptlU3mYzYEPfy3StAOn0XFbZm,1940-04-19
+DARTH SIDIOUS,EMPEROR,darth.sidious,darth-sidious@starwars.com,$2y$10$nx1UvvjZDJtfrzGXUKZT1eD2nR5JQpuBLm7wJuCDiaxoJJBhYNStK,1940-04-19
+BAIL,BAIL ORGANA,bailorgana,bail-organa@starwars.com,$2y$10$1oBEz0MBmPqa1utEEC6an.Ilbb6Bn2GiWbxylFR.MbiNO0XHxM2R2,1955-02-12
+MACE,MACE WINDU,macewindu1,mace-windu@starwars.com,$2y$10$tpovd96TxCfRGO96LIOhj.yuA.dbTIVrbmBrZ/bH262x3R9gPINui,1960-03-15
+WINDU,MACE WINDU,macewindu2,windu@starwars.com,$2y$10$tpovd96TxCfRGO96LIOhj.yuA.dbTIVrbmBrZ/bH262x3R9gPINui,1960-03-15
+MACE-WINDU,MACE WINDU,macewindu3,mace-windu@starwars.com,$2y$10$tpovd96TxCfRGO96LIOhj.yuA.dbTIVrbmBrZ/bH262x3R9gPINui,1960-03-15
+NUTE,NUTE GUNRAY,gunray,nute-gunray@starwars.com,$2y$10$ZQA16MoIWgQmGprTXi1HV.qYOXnTR3aRkHEaLcgMLmzkKdzluyJ2S,1935-06-08
+AUNT BERU,BERU,beru,aunt-beru@starwars.com,$2y$10$JD.u/knVM0JyQaGfHHW/6ul2g6XkVQiVVpIvQUzkW2CwbUg/9esEy,1948-11-11
+DOOKU,COUNT DOOKU,countdooku,dooku@starwars.com,$2y$10$CFl.pABpBLrSWhaXjszzf.4dXpiSaatZo0DQH.2hlRsmFWmdE/bAi,1932-08-02
+BOBA,BOBA FETT,bobafett,boba-fett@starwars.com,$2y$10$MCqUCyq6iv16MpJX4Key7ePWanZLhMBFTnl0CJjdl4JpVtDsmZVWe,1980-12-16
+JANGO,JANGO FETT,jangofett,jango-fett@starwars.com,$2y$10$tyzjjoi.HK6Fjwfvys8xeOdUpEHmneTa1YmwE46cGLRL8EH9sLe06,1955-09-25
+PANAKA,CAPTAIN PANAKA,panaka,panaka@starwars.com,$2y$10$zGWu2lyw2HJVLBvoMo12neLLaV9z6/QRWP7052bjc0OsIM8qjRKQy,1960-04-05
+KI-ADI,KI-ADI-MUNDI,kiadimundi,ki-adi-mundi@starwars.com,$2y$10$tCOntK/2OjJSsgEsu/6Hi.sBKsmMvV6/h5u29E7FZUDnj7pggqlF.,1952-10-10
+BIBBLE,SIO BIBBLE,siobibble,sio-bibble@starwars.com,$2y$10$M3tSTq7JcHxz6LwTFGqPv.VQmJooWv/RS00HfHO5c3u75dzQMgojG,1945-03-28
+ON MEDON,TION MEDON,tionmedon,tion-medon@starwars.com,$2y$10$DYcep9C0ZQsKx1na9oGFweIIzEKCKJT.dbvQfKr5E9lvef67see8e,1957-07-17
+BIB,BIB FORTUNA,bibfortuna,bib-fortuna@starwars.com,$2y$10$OVmON0jr5Wx9beC22G.LNegH9Xyrkmh4mRax6lR4SwbD9/GV.2EvC,1950-09-01
+CHEWIE,CHEWBACCA,chewbacca,chewie@starwars.com,$2y$10$CoY96YwjRac.V7aga9vMx.BYzB9VsgTUNz3XrOaPvx75.Tm9emHea,1956-05-19
+VADER,DARTH VADER,darthvader,vader@starwars.com,$2y$10$fIjfvsj4veuFTPSjWD047u431KWc8.OXWl/mlUoffc.B5Wa6OhWZe,1941-01-31
+ACKBAR,ADMIRAL ACKBAR,ackbar,ackbar@starwars.com,$2y$10$gsgsxG5Su.U3IgJ9Hmud7.Yf2G6WqyxfdAgvzB/59oq5499k/mxRa,1947-05-15
+FN-2187,FINN,finn,finn@starwars.com,$2y$10$HZp.fLcuWOfiWs5oQyO0mO4P3Vqb1KBC.wxSG2OxNSSMHmZURtbmG,1990-11-28
+UNKAR,UNKAR PLUTT,unkarplutt,unkar-plutt@starwars.com,$2y$10$xokpJ.sEirXfcV8soXO1hejIpoKebPI72ETveemSwWXH9xa3whI96,1970-09-30
+YOUNG GIRL,REY,rey,rey@starwars.com,$2y$10$0w9x.CA49QBBrWg8FueV/OLRPxYwHsPI2XnaOucbbgiCI1TZskoVG,1992-04-10
