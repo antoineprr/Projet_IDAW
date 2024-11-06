@@ -22,11 +22,11 @@ $('#addAliment').on('click', function() {
     let alimentHtml = `
         <div class="form-group">
             <div class="input-group mb-3">
-                <input type="text" class="form-control aliment-search" placeholder="Rechercher un aliment" required>
+                <input type="text" class="form-control col-3 aliment-search" placeholder="Rechercher un aliment" required>
                 <input type="hidden" class="form-control aliment-id">
-                <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
+                <input type="number" class="form-control col-3 aliment-quantity" placeholder="Quantité" required>
                 <div class="input-group-append">
-                    <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
+                    <button class="btn btn-danger remove-aliment" style="margin-left: 10px" type="button">Supprimer</button>
                 </div>
                 <div class="dropdown-menu aliment-dropdown"></div>
             </div>
@@ -47,7 +47,7 @@ $(document).on('input', '.aliment-search', function() {
 
     if (searchQuery.length > 0) {
         let filteredAliments = alimentsList.filter(aliment => aliment.NOM_ALIMENT.toLowerCase().includes(searchQuery));
-        filteredAliments.forEach(aliment => {
+        filteredAliments.slice(0,10).forEach(aliment => {
             dropdownMenu.append(`<a class="dropdown-item" href="#" data-id="${aliment.ID_ALIMENT}">${aliment.NOM_ALIMENT}</a>`);
         });
         dropdownMenu.show();

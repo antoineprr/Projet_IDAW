@@ -19,8 +19,7 @@ require_once('config.php');
 <div class="container mt-5 flex-grow-1">
     <div class="row">
         <div class="col-md-12 text-center">
-            <h1>Bienvenue sur notre site</h1>
-            <p class="lead">Découvrez nos produits et services exceptionnels.</p>
+            <h1>Bienvenue <?php echo $_SESSION['login']?></h1>
         </div>
     </div>
 
