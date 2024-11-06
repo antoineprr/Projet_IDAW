@@ -11,6 +11,14 @@ require_once('config.php');
         </div>
     </div>
     <div class="container">
+        <!-- Combobox pour filtrer par type d'aliment -->
+        <div class="form-group">
+            <label for="typeFilter">Filtrer par type d'aliment :</label>
+            <select class="form-control" id="typeFilter">
+                <option value="">Tous les types</option>
+                <!-- Les options seront ajoutées dynamiquement par JavaScript -->
+            </select>
+        </div>
         <div>
             <ul class="pagination">
                 <li class="page-item disabled">
@@ -36,22 +44,25 @@ require_once('config.php');
                 </li>
             </ul>
         </div>
-    </div>
-    <div>
-      <label for="exampleSelect1" class="form-label mt-4">Nombre d'éléments</label>
-      <select class="form-select" id="exampleSelect1">
-        <option>10</option>
-        <option>25</option>
-        <option>50</option>
-        <option>100</option>
-        <option>200</option>
-      </select>
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="form-group">
+                <label class="form-label mt-4">Nombre d'éléments</label>
+                <select class="form-select form-select-sm" id="selectLimit">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                    <option>200</option>
+                </select>
+            </div>
+        </div>
     </div>
     <table class="table table-hover table-sm" id="aliments-table">
         <thead>
             <tr>
                 <th>Nom</th>
                 <th>Catégorie</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -83,6 +94,18 @@ require_once('config.php');
                 <a class="page-link" href="#">&raquo;</a>
             </li>
         </ul>
+    </div>
+
+    <!-- Modal -->
+    <div id="ratiosModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <span class="custom-close">&times;</span>
+            </div>
+            <div class="custom-modal-body" id="ratiosContainer">
+                <!-- Les ratios seront insérés ici par JavaScript -->
+            </div>
+        </div>
     </div>
 
 </body>
