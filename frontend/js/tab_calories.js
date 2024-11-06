@@ -1,8 +1,4 @@
 $(document).ready(function(){
-    let today = new Date();
-    let date = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-
-
     let login = sessionStorage.getItem('login');
     if(login === null) {
         alert("Vous n'êtes pas connecté.");
@@ -10,34 +6,59 @@ $(document).ready(function(){
     }
     let prefix_api = window.prefix_api;
     $.ajax({
-        // L'URL de la requête 
         url: prefix_api + "/utilisateurs.php/calories/" + login,
-
-        // La méthode d'envoi (type de requête)
         method: "GET",
-
-        // Le format de réponse attendu
         dataType : "json",
     })
-    // Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
     .done(function(response){
-        // Formater les données pour le graphique
-        let chartData = response.map(item => {
+        if(response.length === 0) {
+            alert("Aucune donnée disponible.");
+            return;
+        }
+        // Créer un objet pour stocker les calories par date
+        let apiData = {};
+        let dates = [];
+        response.forEach(item => {
+            let dateStr = item.DAY; // Supposons que item.DAY est au format 'YYYY-MM-DD'
+            apiData[dateStr] = item.CALORIES;
+            dates.push(dateStr);
+        });
+
+        // Trouver la date la plus ancienne
+        dates.sort(); // Trie les dates dans l'ordre croissant
+        let earliestDateStr = dates[0];
+        let today = new Date();
+        let todayStr = today.toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format 'YYYY-MM-DD'
+
+        // Générer une plage de dates de la date la plus ancienne à aujourd'hui
+        function generateDateRange(startDateStr, endDateStr) {
+            let startDate = new Date(startDateStr);
+            let endDate = new Date(endDateStr);
+            let dateArray = [];
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                let dateStr = currentDate.toISOString().split('T')[0];
+                dateArray.push(dateStr);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            return dateArray;
+        }
+
+        let dateRange = generateDateRange(earliestDateStr, todayStr);
+
+        // Préparer les données pour le graphique en remplissant les dates manquantes avec zéro
+        let chartData = dateRange.map(dateStr => {
             return {
-                date: new Date(item.DAY).getTime(),
-                calories: item.CALORIES
+                date: new Date(dateStr).getTime(),
+                calories: apiData[dateStr] || 0
             };
         });
 
-        // Créer le graphique avec les données formatées
+        // Créer le graphique avec les données complètes
         createChart(chartData);
     })
-    // Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
     .fail(function(error){
         console.error(error);
-    })
-    // Ce code sera exécuté que la requête soit un succès ou un échec
-    .always(function(){
     });
 });
 
