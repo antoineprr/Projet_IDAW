@@ -189,7 +189,7 @@ function check_pswd($pdo, $login, $mdp){
         $stmt->bindParam(':login', $login);
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($res['MDP'] != $mdp){
+        if(!($res && password_verify($mdp, $res['MDP']))){
             http_response_code(401);
             exit(json_encode(['status' => 'error', 'message' => "Wrong password for user '$login'"]));
         }
@@ -402,7 +402,8 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true);
         if(isset($data['login']) && isset($data['code_age']) && isset($data['code_sexe']) && isset($data['code_sport']) && isset($data['mdp']) && isset($data['nom']) && isset($data['prenom']) && isset($data['date_naissance']) && isset($data['email'])){
-            add_utilisateur($pdo, $data['login'], $data['code_age'], $data['code_sexe'], $data['code_sport'], $data['mdp'], $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
+            $hashed_pwd = password_hash($data['mdp'], PASSWORD_DEFAULT);
+            add_utilisateur($pdo, $data['login'], $data['code_age'], $data['code_sexe'], $data['code_sport'], $hashed_pwd, $data['nom'], $data['prenom'], $data['date_naissance'], $data['email']);
             setHeaders();
             http_response_code(201);
             exit(json_encode(['status' => 'success', 'message' => 'Utilisateur ajouté']));
@@ -444,7 +445,8 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         } else if (isset($data['login']) && isset($data['current_password']) && isset($data['new_password'])) {
             $login = $data['login'];
             if(check_pswd($pdo, $login, $data['current_password'])){
-                update_mdp($pdo, $login, $data['new_password']);
+                $hashed_pwd = password_hash($data['new_password'], PASSWORD_DEFAULT);
+                update_mdp($pdo, $login, $hashed_pwd);
                 http_response_code(200);
                 exit(json_encode(['status' => 'success', 'message' => "Password updated for user '$login'"]));
             } else {
