@@ -49,7 +49,16 @@ function add_repas($pdo, $login, $date) {
 }
 
 function delete_repas($pdo, $code_repas) {
-    $sql = "DELETE FROM repas WHERE CODE_REPAS=:code_repas";
+    $sql = "DELETE 
+            FROM contient 
+            WHERE CODE_REPAS=:code_repas";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_repas', $code_repas);
+    $stmt->execute();
+
+    $sql = "DELETE 
+            FROM repas 
+            WHERE CODE_REPAS=:code_repas";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':code_repas', $code_repas);
     $stmt->execute();
