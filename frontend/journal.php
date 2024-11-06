@@ -39,9 +39,9 @@ require_once('config.php');
         <div class="input-group mb-3">
             <input type="text" class="form-control aliment-search" placeholder="Rechercher un aliment" required>
             <input type="hidden" class="aliment-id">
-            <input type="number" class="form-control aliment-quantity" placeholder="Quantité" required>
+            <input type="number" class="form-control aliment-quantity" placeholder="Quantité" style="border-radius: 0 5px 5px 0;" required>
             <div class="input-group-append">
-                <button class="btn btn-danger remove-aliment" type="button">Supprimer</button>
+                <button class="btn btn-danger remove-aliment" type="button" style="margin-left: 10px">Supprimer</button>
             </div>
             <div class="dropdown-menu aliment-dropdown"></div>
         </div>

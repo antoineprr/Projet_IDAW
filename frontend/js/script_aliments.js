@@ -3,7 +3,7 @@ $(document).ready(function() {
     let currentPage = 1;
     let totalPages = loadTotalPages();
     const maxVisiblePages = 5;
-    let limit = 100;
+    let limit = 50;
 
     setTimeout(function() {
         loadPage(currentPage);

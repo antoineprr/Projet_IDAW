@@ -15,7 +15,7 @@ function explode_url($url) {
 
 
 function user_exist($pdo, $login) {
-    $sql = "SELECT * FROM utilisateur WHERE LOGIN=:login";
+    $sql = "SELECT * FROM utilisateur WHERE BINARY LOGIN=:login";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':login', $login);
     $stmt->execute();
@@ -184,7 +184,7 @@ function add_repas_to_utilisateur($pdo, $login, $date, $aliment, $quantite){
 
 function check_pswd($pdo, $login, $mdp){
     if(user_exist($pdo, $login)){
-        $sql = "SELECT MDP FROM utilisateur WHERE LOGIN=:login";
+        $sql = "SELECT MDP FROM utilisateur WHERE BINARY LOGIN=:login";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':login', $login);
         $stmt->execute();
