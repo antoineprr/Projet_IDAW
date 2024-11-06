@@ -1,10 +1,10 @@
 $(document).ready(function() {
     const prefix_api = window.prefix_api;
     let currentPage = 1;
+    let selectedType = '';
     let limit = getLimit();
     let totalPages = loadTotalPages();
     const maxVisiblePages = 5;
-    let selectedType = '';
     loadTypes(); 
 
 
@@ -15,7 +15,8 @@ $(document).ready(function() {
     $('#typeFilter').on('change', function() {
         selectedType = $(this).val();
         currentPage = 1;
-        loadAliments(currentPage);
+        limitChange();
+
     });
 
     setTimeout(function() {
@@ -45,7 +46,7 @@ $(document).ready(function() {
             success: function(types) {
                 let typeFilter = $('#typeFilter');
                 types.forEach(function(type) {
-                    typeFilter.append(`<option value="${type.CODE_TYPE}">${type.NOM_TYPE}</option>`);
+                    typeFilter.append(`<option value="${type.CODE_TYPE}">${type.NOM_TYPE.charAt(0).toUpperCase() + type.NOM_TYPE.slice(1)}</option>`);
                 });
             },
             error: function(error) {
@@ -55,9 +56,13 @@ $(document).ready(function() {
     }
 
     function loadTotalPages(){
+        let url = `${prefix_api}/aliments.php`;
+        if(selectedType !== ''){
+            url += `/${selectedType}`;
+        }
         $.ajax({
             type: 'GET',
-            url: `${prefix_api}/aliments.php`,
+            url: url,
             dataType: 'json',
             success: function(data) {
                 totalPages = Math.floor(data.length / limit) + 1;
