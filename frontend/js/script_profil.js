@@ -3,7 +3,9 @@ $(document).ready(function() {
     chargerTranchesAge();
     chargerPratiqueSport();
     chargerSexe();
-    chargerDonnees();
+    setTimeout(function() {
+        chargerDonnees();
+    }, 100);
     lockChamps();
 });
 
