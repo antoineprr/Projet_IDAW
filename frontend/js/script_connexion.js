@@ -32,7 +32,7 @@ function onFormSubmit(event) {
         },
         error: function(xhr, status, error) {
             if (xhr.status === 401) {
-                alert("Problème de login/mot de passe.");
+                alert("Erreur de login/mot de passe.");
             } else {
                 console.error(xhr.responseText);
                 alert("Une erreur s'est produite lors de la connexion.");
