@@ -4,13 +4,14 @@ require_once('config.php');
 ?>
 
 <div class="container flex-grow-1">
-    <h2>Vos repas :</h2>
+    <h2 class="text-center">Vos repas</h2>
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Aliments</th>
                 <th scope="col">Actions</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="mealsTableBody">
