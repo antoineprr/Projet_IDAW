@@ -215,4 +215,78 @@ $(document).ready(function() {
         });
         pagination.append(lastButton);
     }
+
+    $('#aliments-table tbody').on('dblclick', 'tr', function() {
+        let alimentName = $(this).find('.col-nom-aliment').text();
+        $.ajax({
+            url: `${prefix_api}/aliments.php`,
+            method: "GET",
+            dataType: "json",
+            data: { name: alimentName },
+            success: function(aliment) {
+                $('#alimentNom').val(aliment[0].NOM_ALIMENT);
+                $('#alimentCategorie').val(aliment[0].NOM_TYPE);
+                $('#deleteAliment').prop('disabled', false);
+                $('#alimentModal').show();
+            },
+            error: function(xhr, status, error) {
+                console.error("Erreur lors de la récupération de l'aliment :", error);
+            }
+        });
+    });
+
+    $('.custom-close').on('click', function() {
+        $('#alimentModal').hide();
+        $('#alimentForm')[0].reset();
+        $('#deleteAliment').prop('disabled', true);
+    });
+
+    $('#alimentForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: `${prefix_api}/aliments.php`,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: $('#alimentNom').val(),
+                type: $('#alimentCategorie').val(),
+            }),
+            success: function(response) {
+                alert("Aliment mis à jour avec succès.");
+                $('#alimentModal').hide();
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Erreur lors de la mise à jour de l'aliment :", error);
+            }
+        });
+    });
+
+    $('#deleteAliment').on('click', function() {
+        if(confirm("Êtes-vous sûr de vouloir supprimer cet aliment ?")) {
+            let alimentNom = $('#alimentNom').val();
+            $.ajax({
+                url: `${prefix_api}/aliments.php`,
+                method: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify({ name: alimentNom }),
+                success: function(response) {
+                    alert("Aliment supprimé avec succès.");
+                    $('#alimentModal').hide();
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Erreur lors de la suppression de l'aliment :", error);
+                }
+            });
+        }
+    });
+
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#alimentModal')) {
+            $('#alimentModal').hide();
+            $('#alimentForm')[0].reset();
+            $('#deleteAliment').prop('disabled', true);
+        }
+    });
 });

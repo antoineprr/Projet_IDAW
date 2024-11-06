@@ -61,7 +61,7 @@ require_once('config.php');
             <tr>
                 <th>Nom</th>
                 <th>Catégorie</th>
-                <th>Actions</th>
+                <th>Ratios</th>
             </tr>
         </thead>
         <tbody>
@@ -103,6 +103,29 @@ require_once('config.php');
             </div>
             <div class="custom-modal-body" id="ratiosContainer">
                 <!-- Les ratios seront insérés ici par JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div id="alimentModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h2>Informations de l'aliment</h2>
+                <span class="custom-close">&times;</span>
+            </div>
+            <div class="custom-modal-body">
+                <form id="alimentForm">
+                    <div class="form-group">
+                        <label for="alimentNom">Nom</label>
+                        <input type="text" id="alimentNom" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alimentCategorie">Catégorie</label>
+                        <input type="text" id="alimentCategorie" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="button" id="deleteAliment" class="btn btn-danger" disabled>Supprimer</button>
+                </form>
             </div>
         </div>
     </div>

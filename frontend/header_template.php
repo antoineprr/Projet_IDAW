@@ -19,7 +19,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <body class="d-flex flex-column min-vh-100">
 <nav class="navbar navbar-expand-lg bg-primary position-relative" data-bs-theme="dark">
   <div class="container-fluid">
-    <!-- Left side: Menu -->
     <a class="navbar-brand">Menu</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -39,12 +38,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <a class="nav-link <?php if($current_page == 'aliments.php') echo 'active'; ?>" href="aliments.php">Aliments</a>
         </li>
       </ul>
-
-      <!-- Centered Title -->
       <div class="position-absolute top-50 start-50 translate-middle text-white fs-1">
         <span>iMangerMieux</span>
       </div>
-
       <div class="d-flex">
         <a class="nav-link btn-secondary" href="../backend/deconnexion.php">Deconnexion</a>
       </div>

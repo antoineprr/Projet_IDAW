@@ -14,7 +14,9 @@ function get_aliments($pdo) {
 }
 
 function get_aliment_by_name($pdo, $aliment_url) {
-    $sql = "SELECT * FROM aliment WHERE NOM_ALIMENT=:aliment";
+    $sql = "SELECT a.NOM_ALIMENT, t.NOM_TYPE
+            FROM aliment a JOIN TYPE_ALIMENT t ON a.CODE_TYPE = t.CODE_TYPE 
+            WHERE NOM_ALIMENT=:aliment";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':aliment', $aliment_url);
     $stmt->execute();
@@ -37,6 +39,14 @@ function get_aliment_by_code_type($pdo, $code_type) {
         exit(json_encode(['status' => 'error', 'message' => "Code '$code_type' not found"]));
     }
     return $res;
+}
+
+function get_code_type($pdo, $type) {
+    $sql = "SELECT CODE_TYPE FROM type_aliment WHERE NOM_TYPE=:type";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':type', $type);
+    $stmt->execute();
+    return $stmt->fetchColumn();
 }
 
 function get_aliments_paginated($pdo, $page, $limit) {
@@ -136,9 +146,10 @@ switch($_SERVER["REQUEST_METHOD"]) {
         }
         elseif ($aliment_url=='aliments' || $aliment_url=='' || $aliment_url=='aliments.php' ){
             $result = get_aliments($pdo);
+        } elseif (isset($data['name'])) {
+            $result = get_aliment_by_name($pdo,$data['name']);
         } elseif (!is_numeric($aliment_url)){
             $aliment_url = urldecode($aliment_url);
-            $aliment_url = str_replace("-", " ", $aliment_url);
             $result = get_aliment_by_name($pdo, $aliment_url);
         }
         else{
@@ -168,7 +179,8 @@ switch($_SERVER["REQUEST_METHOD"]) {
     case 'PUT':
         $data = json_decode(file_get_contents('php://input'), true);
         if (isset($data['name']) && isset($data['type'])) {
-            $result = update_aliment($pdo, $data['name'], $data['type']);
+            $code_type = get_code_type($pdo, $data['type']);
+            $result = update_aliment($pdo, $data['name'], $code_type);
             setHeaders();
             http_response_code(200);
             exit(json_encode(['status' => 'success', 'message' => 'Aliment updated successfully']));
