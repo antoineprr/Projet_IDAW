@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `CODE_AGE` int NOT NULL,
   `CODE_SEXE` int NOT NULL,
   `CODE_SPORT` int NOT NULL,
-  `MDP` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `MDP` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `NOM` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `PRENOM` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `DATE_NAISSANCE` date NOT NULL,
