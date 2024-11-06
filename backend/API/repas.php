@@ -48,6 +48,22 @@ function add_repas($pdo, $login, $date) {
     }
 }
 
+function delete_repas($pdo, $code_repas) {
+    $sql = "DELETE 
+            FROM contient 
+            WHERE CODE_REPAS=:code_repas";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_repas', $code_repas);
+    $stmt->execute();
+
+    $sql = "DELETE 
+            FROM repas 
+            WHERE CODE_REPAS=:code_repas";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':code_repas', $code_repas);
+    $stmt->execute();
+}
+
 function add_aliment_to_repas($pdo, $code_repas, $nom_aliment, $quantite) {
     $sql = "INSERT INTO contient (CODE_REPAS, NOM_ALIMENT, QUANTITE) 
             VALUES (:code_repas, :nom_aliment, :quantite);";
@@ -108,6 +124,22 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         else{
             http_response_code(404);
             exit(json_encode(['status'=>'error', 'message'=>'invalid input']));
+        }
+    case 'DELETE':
+        $url = $_SERVER['REQUEST_URI'];
+        $url_segments = explode('/', $url);
+        $url_size = sizeof($url_segments);
+        $utilisateur_url = $url_segments[$url_size-1];
+        $utilisateur_url = htmlspecialchars($utilisateur_url, ENT_QUOTES, 'UTF-8');
+        if($utilisateur_url=='repas' || $utilisateur_url==''){
+            http_response_code(404);
+            exit(json_encode(['status'=>'error', 'message'=>'invalid input']));
+        }
+        else{
+            delete_repas($pdo, $utilisateur_url);
+            setHeaders();
+            http_response_code(200);
+            exit(json_encode(['status'=>'success', 'message'=>'repas deleted']));
         }
 
     default:

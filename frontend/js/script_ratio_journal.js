@@ -24,10 +24,11 @@ $(document).ready(function(){
             let date = item.DATE.split(' ')[0]; // Extraire la date sans l'heure
             let aliments = item.NOM_ALIMENTS.join(', et ');
             let row = `<tr>
-                <td>${date}</td>
-                <td>${aliments}</td>
-                <td><button class="btn btn-primary ratio-btn" data-code-repas="${codeRepas}">Voir les ratios</button></td>
-            </tr>`;
+                            <td>${date}</td>
+                            <td>${aliments}</td>
+                            <td><button class="btn btn-primary ratio-btn" data-code-repas="${codeRepas}">Voir les ratios</button></td>
+                            <td><button class="btn btn-danger delete-btn" data-code-repas="${codeRepas}">Supprimer</button></td>
+                        </tr>`;
             tableBody.append(row);
         });
 
@@ -35,7 +36,15 @@ $(document).ready(function(){
             let codeRepas = $(this).data('code-repas');
             getRatios(codeRepas);
         });
+
+        // Après l'ajout des lignes dans le tableau, ajoutez l'écouteur d'événement pour le bouton "Supprimer"
+        $('.delete-btn').on('click', function() {
+            let codeRepas = $(this).data('code-repas');
+            supprimerRepas(codeRepas);
+        });
     }
+
+    
 
     function renderPagination(totalItems) {
         let paginationContainer = $('#paginationContainer');
@@ -104,6 +113,20 @@ $(document).ready(function(){
     .always(function(){
     });
 });
+
+
+// Fonction vide appelée lors du clic sur "Supprimer"
+function supprimerRepas(codeRepas) {
+    $.ajax({
+        url: prefix_api + "/repas/" + codeRepas,
+        method: "DELETE",
+        dataType : "json",
+    })
+    .done(function(response){
+        // Recharger la page pour afficher les repas mis à jour
+        location.reload();
+    })
+}
 
 // Fonction pour obtenir les ratios d'un repas
 function getRatios(codeRepas) {
