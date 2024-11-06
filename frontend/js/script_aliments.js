@@ -65,7 +65,7 @@ $(document).ready(function() {
             url: url,
             dataType: 'json',
             success: function(data) {
-                totalPages = Math.floor(data.length / limit) + 1;
+                totalPages = Math.ceil(data.length / limit);
             },
             error: function(xhr, status, error) {
                 console.error(error);

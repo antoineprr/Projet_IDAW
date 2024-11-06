@@ -11,13 +11,24 @@ require_once('config.php');
         </div>
     </div>
     <div class="container">
-        <!-- Combobox pour filtrer par type d'aliment -->
-        <div class="form-group">
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="form-group" style="max-width: 40%;">
             <label for="typeFilter">Filtrer par type d'aliment :</label>
             <select class="form-control" id="typeFilter">
                 <option value="">Tous les types</option>
                 <!-- Les options seront ajoutées dynamiquement par JavaScript -->
             </select>
+            </div>
+            <div class="form-group">
+            <label class="form-label mt-4">Nombre d'éléments</label>
+            <select class="form-select form-select-sm" id="selectLimit">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+                <option>200</option>
+            </select>
+            </div>
         </div>
         <div>
             <ul class="pagination">
@@ -43,18 +54,6 @@ require_once('config.php');
                     <a class="page-link" href="#">&raquo;</a>
                 </li>
             </ul>
-        </div>
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <div class="form-group">
-                <label class="form-label mt-4">Nombre d'éléments</label>
-                <select class="form-select form-select-sm" id="selectLimit">
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
-                    <option>100</option>
-                    <option>200</option>
-                </select>
-            </div>
         </div>
     </div>
     <table class="table table-hover table-sm" id="aliments-table">
