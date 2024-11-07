@@ -1,4 +1,3 @@
-```markdown
 # Application de Suivi Nutritionnel
 
 Ce projet est une application de suivi nutritionnel permettant aux utilisateurs de gérer leurs repas, de surveiller leur apport calorique, et de visualiser leurs données nutritionnelles via des graphiques interactifs. Elle utilise un backend en PHP pour gérer les sessions et les données utilisateur, avec un frontend en HTML, CSS, et JavaScript (jQuery et Bootstrap).
