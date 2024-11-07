@@ -95,7 +95,7 @@ switch($_SERVER["REQUEST_METHOD"]) { //TODO voir comment faire pour l'explode de
         $url_size = sizeof($url_segments);
         $utilisateur_url = $url_segments[$url_size-1];
         $utilisateur_url = htmlspecialchars($utilisateur_url, ENT_QUOTES, 'UTF-8');
-        if ($utilisateur_url=='repas' || $utilisateur_url==''){
+        if ($utilisateur_url=='repas' || $utilisateur_url=='' || $utilisateur_url=='repas.php'){
             $result = get_repas($pdo);
         }
         else {

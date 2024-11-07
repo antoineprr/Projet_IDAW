@@ -18,7 +18,11 @@ Ce document décrit les différents endpoints de l'API, les méthodes HTTP dispo
     - GET /utilisateurs.php/ratios_repas/:login/:code_repas
 - Aliments
     - GET /aliments.php
-    - GET /aliments.php/:type
+    - GET /aliments.php/:code_type
+    - GET /aliments.php/:nom_aliment
+    - POST /aliments.php
+    - PUT /aliments.php
+    - DELETE /aliments.php
 - Repas
     - GET /repas.php
     - POST /repas.php
@@ -286,12 +290,10 @@ La méthode GET permet de récupérer des informations sur les aliments. Elle of
 ```
 [
   {
-    "ID_ALIMENT": 1,
     "NOM_ALIMENT": "Pomme",
     "CODE_TYPE": 1
   },
   {
-    "ID_ALIMENT": 2,
     "NOM_ALIMENT": "Banane",
     "CODE_TYPE": 1
   },
@@ -322,7 +324,6 @@ GET /aliments.php?name=Banane
 **Exemple de réponse :**
 ```
 {
-  "ID_ALIMENT": 2,
   "NOM_ALIMENT": "Banane",
   "CODE_TYPE": 1
 }
@@ -352,12 +353,10 @@ GET /aliments.php/1
 ```
 [
   {
-    "ID_ALIMENT": 1,
     "NOM_ALIMENT": "Pomme",
     "CODE_TYPE": 1
   },
   {
-    "ID_ALIMENT": 2,
     "NOM_ALIMENT": "Banane",
     "CODE_TYPE": 1
   },
@@ -396,12 +395,10 @@ GET /aliments.php?page=1&limit=10&type=2
 ```
 [
   {
-    "ID_ALIMENT": 11,
     "NOM_ALIMENT": "Poulet",
     "CODE_TYPE": 2
   },
   {
-    "ID_ALIMENT": 12,
     "NOM_ALIMENT": "Bœuf",
     "CODE_TYPE": 2
   },
@@ -545,6 +542,29 @@ Récupère la liste de tous les repas.
 ]
 ```
 
+### GET /repas.php/:login
+
+**Description :**
+
+Récupère la liste de tous les repas d'un utilisateur
+
+**Réponse :**
+```
+[
+  {
+    "CODE_REPAS": 1,
+    "LOGIN": "user1",
+    "DATE": "2023-10-15 12:30:00"
+  },
+  {
+    "CODE_REPAS": 2,
+    "LOGIN": "user1",
+    "DATE": "2023-10-16 19:00:00"
+  },
+  ...
+]
+```
+
 ### POST /repas.php
 
 **Description :**
@@ -630,6 +650,37 @@ Récupère la liste de tous les types d'aliments disponibles.
     "NOM_TYPE": "Viandes"
   },
   ...
+]
+```
+
+### GET /type-aliments.php/aliment/:nom_aliment
+
+**Description :**
+
+Récupère le type d'un aliment
+
+**Réponse :**
+```
+[
+  {
+    "CODE_TYPE": 1,
+    "NOM_TYPE": "Fruits"
+  },
+]
+```
+
+### GET /type-aliments.php/id/:code_type
+
+**Description :**
+
+Récupère le nom d'un de type d'aliment à partir de son code
+
+**Réponse :**
+```
+[
+  {
+    "NOM_TYPE": "Fruits"
+  },
 ]
 ```
 
