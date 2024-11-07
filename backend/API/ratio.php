@@ -95,6 +95,18 @@ switch($_SERVER["REQUEST_METHOD"]) {
         $ratio_url = htmlspecialchars($ratio_url, ENT_QUOTES, 'UTF-8');
         $previous_ratio_url = $url_segments[$url_size-2];
         $previous_ratio_url = htmlspecialchars($previous_ratio_url, ENT_QUOTES, 'UTF-8');
+
+        $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+        if ($query !== false) {
+            parse_str($query, $data);
+        }
+
+        if (isset($data['name'])) {
+            $result = get_ratios_of_aliment($pdo, $data['name']); 
+            setHeaders();
+            http_response_code(200);
+            exit(json_encode($result));
+        }
         if($ratio_url=='')
             $ratio_url = $previous_ratio_url;
         if ($ratio_url=='ratio'){
@@ -102,13 +114,11 @@ switch($_SERVER["REQUEST_METHOD"]) {
         }
         elseif (!is_numeric($ratio_url)){
             $ratio_url = urldecode($ratio_url);
-            $ratio_url = str_replace("-", " ", $ratio_url);
             $result = get_ratios_of_aliment($pdo, $ratio_url);
         }
         else{
             if ($url_segments[$url_size-2]!='ratio'){
                 $aliment_url = urldecode($url_segments[$url_size-2]);
-                $aliment_url = str_replace("-", " ", $aliment_url);            
                 $result = get_one_ratio_of_aliment($pdo, $ratio_url, $aliment_url);
             } else {
                 http_response_code(400);

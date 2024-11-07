@@ -114,9 +114,10 @@ $(document).ready(function() {
 
     function getRatios(aliments) {
         $.ajax({
-            url: prefix_api + "/ratio/" + aliments,
+            url: prefix_api + "/ratio.php",
             method: "GET",
             dataType: "json",
+            data: { name: aliments },
             success: function(data) {
                 let ratiosContainer = $('#ratiosContainer');
                 ratiosContainer.empty();
