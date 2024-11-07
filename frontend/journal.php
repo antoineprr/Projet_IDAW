@@ -48,7 +48,7 @@ require_once('config.php');
         </div>
     </div>
 </div>
-        <button class="btn btn-secondary" id="addAliment" type="button">Ajouter un aliment</button>
+        <button class="btn btn-primary" id="addAliment" type="button">Ajouter un aliment</button>
         <button type="submit" class="btn btn-primary">Créer le repas</button>
     </form>
 </div>
