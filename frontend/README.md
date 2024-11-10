@@ -25,7 +25,6 @@ Utilisez les identifiants suivants pour tester les différentes fonctionnalités
 
 | Nom d'utilisateur | Mot de passe      |
 |-------------------|-------------------|
-| testDEV           | dev               |
 | ackbar            | MDPAckbar         |
 | ...               | ...               |
 
@@ -67,7 +66,6 @@ Le frontend est conçu pour offrir une interface intuitive et réactive. Les fon
 
 1. **Définir l'API backend** : Assurez-vous que le fichier `config.php` pointe vers l'URL correcte de l'API backend.
 2. **Installer les Dépendances** : Les bibliothèques externes (jQuery, Bootstrap, amCharts) sont incluses via des liens CDN dans les fichiers HTML/PHP.
-3. **Tester les Logins** : Utilisez les identifiants fournis pour vous connecter et tester les différentes fonctionnalités.
 
 ---
 
